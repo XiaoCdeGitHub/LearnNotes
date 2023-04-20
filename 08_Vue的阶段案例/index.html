@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<style>
+    .active{
+        color:red
+    }
+    table{
+        border-collapse: collapse;
+        text-align: center;
+    }
+    thead{
+        background-color: #f5f5f5;
+    }
+    th,td{
+        border: 1px solid #aaa;
+        padding:8px 16px;
+    }
+</style>
+<body>
+    <div id="app">
+      <template v-if="books.length">
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>书籍名称</th>
+                    <th>出版日期</th>
+                    <th>价格</th>
+                    <th>购买数量</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr 
+                 v-for="(item,index) in books" :key="item.id" 
+                 :class="{active:index === currentIndex }"
+                 @click="trClick(index)"
+               >
+                    <td>{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date}}</td>
+                    <td>{{formatPrice(item.price)}}</td>
+                    <td>
+                        <button :disabled="item.count<=1" @click="decrement(index,item)">-</button>
+                        {{item.count}}
+                        <button @click="increment(index,item)">+</button>
+                    </td>
+                    <td><button @click="removeBook(index,item)">移除</button></td>
+                </tr>
+            </tbody>
+        </table>    
+        <h2>总价:{{formatPrice(totalPrice)}}</h2>
+        <h2>当前选中书籍：{{checkedBook}}</h2>
+      </template>
+        <h1 v-else>购物车为空</h1>
+
+
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                checkedBook:'',
+                currentIndex:-1,
+                message: 'Hello Vue',
+                books:[{
+                    id:1,
+                    name:'算法导论',
+                    date:'2006-9',
+                    price:85,
+                    count:1
+                },{
+                    id:1,
+                    name:'你不知道的js',
+                    date:'2026-9',
+                    price:55,
+                    count:1
+                },{
+                    id:1,
+                    name:'算法导论',
+                    date:'2004-9',
+                    price:11,
+                    count:1
+                },{
+                    id:1,
+                    name:'Vue',
+                    date:'2036-9',
+                    price:33,
+                    count:1
+                },{
+                    id:1,
+                    name:'代码随想录',
+                    date:'2046-9',
+                    price:32,
+                    count:1
+                },]
+            }
+        },
+        computed: {
+            totalPrice(){
+             /*    let price = 0;
+                for (const item of this.books){
+                    price += item.price * item.count
+                }
+                return price */
+                return this.books.reduce((preValue,item) =>  preValue + item.price * item.count
+                ,0)
+            }
+        },
+        methods:{
+            formatPrice(price){
+                return '$'+ price 
+            },
+            decrement(index,item){
+                console.log(index);
+                this.books[index].count--;
+
+            },
+            increment(index,item){
+                console.log(index);
+                // this.books[index].count++;
+                item.count++;
+
+            },removeBook(index,item){
+                this.books.splice(index,1)
+            },
+            trClick(index){
+    console.log(index);
+    console.log(this.books[index].name);
+    this.currentIndex = index;
+    this.checkedBook = this.books[index].name;
+}
+        }
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

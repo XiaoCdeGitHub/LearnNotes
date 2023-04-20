@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{ message }}</h2>
+        <h2>电影列表</h2>
+        <ul>
+            <li v-for="(movie,index) in movies">
+                {{ index+1 }} - {{ movie }}
+            </li>
+        </ul>
+        <!-- 遍历复杂数据 -->
+        <ul>
+
+        </ul>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                movies:['星际穿越','少年派','大话西游','哆啦A梦'],
+                products:[
+                    {id:110,name:'macbook',price:'239.9'},
+                    {id:122,name:'小米',price:'934.9'},
+                    {id:14231,name:'iPhone',price:'977.9'},
+                    {id:1321312,name:'rog',price:'43449.9'},
+                ]
+            }
+        },
+        methods: {
+            
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成器函数实例</title>
+</head>
+<body>
+    <script>
+        function one(){
+            setTimeout(() => {
+                // console.log(111);
+                let data = '刘嘉怡'
+                iterator.next(data);
+            }, 1000);
+        }
+        function two(){
+            setTimeout(() => {
+                // console.log(222);
+                let data = '你晚上'
+                iterator.next(data);
+            },  1000);
+        }
+        function three(){
+            setTimeout(() => {
+                // console.log(333);
+                let data = '想吃什么'
+                iterator.next(data);
+            }, 1000);
+        }
+        function * gen(){
+          let users  =  yield one();
+          console.log(users);
+          let orders =  yield two();
+          console.log(orders);
+          let goods  =  yield three();
+          console.log(goods);
+        }
+        let iterator = gen();
+        iterator.next();
+
+    </script>
+</body>
+</html>

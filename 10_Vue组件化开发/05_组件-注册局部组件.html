@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{message}}</h2>
+        
+        <nav-bar>
+           
+        </nav-bar>
+    </div>
+
+
+    <template id="pd">
+        <div>
+            <h2>我是帅哥</h2>
+        </div>
+        
+    </template>
+    <template id="nav">
+        <product-item>
+        </product-item>
+        <div>
+           <h2>我是帅哥脆脆鲨</h2> 
+        </div>
+    </template>
+    
+    <script src="../lib/vue.js"></script>
+    <script>
+        //1.创建app
+        //1.1组件打算在哪里被使用
+        const ProductItem = {
+                    template:'#pd',
+                    
+                   }
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'Hello Vue'
+                }
+            },components:{
+                   NavBar:{
+                        template:'#nav',
+                        components:{
+                            ProductItem
+                        }
+                    }
+                }
+        })
+        //2.挂载app
+        app.mount("#app")
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{message}}</h2>
+        <h2>{{fullname}}</h2>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                firstName: 'John',
+                lastName: 'bryant',
+            }
+        },
+        computed: {
+            //语法糖写法：
+            /* fullname(){
+                return this.firstName + ' ' + this.lastName
+            } */
+            //完整写法：
+            fullname:{
+                get(){
+                    return this.firstName + ' ' + this.lastName
+                },
+                set:function(value){
+                    
+                }
+            }
+        },
+        methods: {
+
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

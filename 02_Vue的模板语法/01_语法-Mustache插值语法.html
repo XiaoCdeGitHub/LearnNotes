@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 基本使用 -->
+        <h2>当前计数：{{ counter }}</h2>
+        <button @click="increment">+1</button>
+        <button @click="decrement">-1</button>
+        <!-- 2.表达式 --> 
+
+<h2>计数双倍{{counter * 2}}</h2>
+<h2>表达式的值:{{info.split(" ")}}</h2>
+<h2>调用函数:{{reverse()}}</h2>
+
+
+    </div>
+<script src="../lib/vue.js"></script>
+<script>
+const app = Vue.createApp({
+    data(){
+        return {
+            counter:100,
+            info:'my name is cuicuisha',
+            age:'20'
+        }
+    },
+    methods:{
+        reverse(){
+            return "我是函数的调用"
+        }
+
+    }
+
+ 
+
+})
+
+app.mount('#app')
+
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+        <button @click="swichImage">切换图片</button>
+        </div>
+  <img :src="showImgUrl" alt="">
+  <a :href="herf">百度一下你就知道</a>
+    </div>
+<script src="../lib/vue.js"></script>
+<script>
+
+    const app = Vue.createApp({
+    data(){
+        return {
+            imgUrl1:'https://cd-mapbed.oss-cn-beijing.aliyuncs.com/QQ%E5%9B%BE%E7%89%8720221030103023.jpg',
+            imgUrl2:'https://cd-mapbed.oss-cn-beijing.aliyuncs.com/preview.gif',
+          showImgUrl: 'https://cd-mapbed.oss-cn-beijing.aliyuncs.com/QQ%E5%9B%BE%E7%89%8720221030103023.jpg'
+        ,herf:'http://www.baidu.com'
+        }
+    },
+    methods: {
+        swichImage(){
+            this.showImgUrl = this.showImgUrl ===this.imgUrl1?this.imgUrl2:this.imgUrl1
+    }
+}})
+app.mount('#app')
+
+
+
+</script>
+</body>
+</html>

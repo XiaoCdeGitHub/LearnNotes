@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<style>
+    .box {
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <!-- 冒泡 -->
+        <div class="box" v-on:click="divClick">
+            <button @click="btnclick">我是按钮</button>
+        </div>
+        <p></p>
+        <div class="box" v-on:click="divClick">
+            <button @click.stop="btnclick">我是不会冒泡按钮</button>
+        </div>
+        <p></p>
+        <div class="box" v-on:click="divClick">
+            <button @click.right="btnclick">我是按钮</button>
+        </div>
+
+
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+
+            }
+        }, methods: {
+            divClick() {
+                console.log('divClick');
+            },
+            btnclick() {
+                console.log('btnClick');
+            }
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

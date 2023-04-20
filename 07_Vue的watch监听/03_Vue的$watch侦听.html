@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{info.name}}</h2>
+        <button @click="changeMessage">修改</button>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                info: { name: '脆脆鲨', age: 18 }
+            }
+        },
+        methods: {
+            changeMessage() {
+                this.message = '你好啊，脆脆鲨',
+                    //1.创建新对象，赋值给info
+                    // this.info = {name:'111'}
+                    //2.直接修改info的值
+                    this.info.name = '大帅比'
+            }
+        },
+        created() {
+
+            this.$watch('message', (newValue, oldValue) => {
+                console.log(newValue, oldValue);
+            }, { deep: true })
+
+
+        },
+
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

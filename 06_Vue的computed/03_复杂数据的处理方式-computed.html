@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{fullname}}</h2>
+        <h3>{{scoreLevel}}</h3>
+        <h1>{{reverseMessage}}</h1>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'my name is cuicuisha',
+                firstName: 'kobe',
+                lastName: 'bryant',
+                score:80,
+            }
+            
+        },
+        methods: {
+
+        },
+        computed:{
+            fullname(){
+                // return 'hello world'
+                return this.firstName + ' ' + this.lastName
+            },
+            scoreLevel(){
+                 return this.score>=60 ?'及格':'不及格'
+            },
+            reverseMessage(){
+                return this.message.split(" ").reverse().join(" ") 
+            }
+
+        }
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

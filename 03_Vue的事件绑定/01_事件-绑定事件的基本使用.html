@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<style>
+    .box{
+        width: 100px;
+        height: 100px;
+        background-color: pink;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <!-- 1.完整写法 -->
+       <div class="box" v-on:click="divClick"></div>
+
+       <div class="box" @click="divClick"></div>
+       <div>{{counter}}</div>
+       <div class="box" @click="increment">+1</div>
+
+       <div class="box" @mousemove="divMousemove"></div>
+
+       <div class="box" v-on="{click:divClick,mousemove:divMousemove}"></div>
+       <div class="box" @="{click:divClick,mousemove:divMousemove}">111</div>
+
+
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                counter:0,
+            }
+        },methods: {
+            divClick(){
+                console.log("🚀 ~ file: 01_事件-绑定事件的基本使用.html:34 ~ divClick ~ divClick:")
+                
+            },
+            increment(){
+                this.counter ++ 
+            },
+            divMousemove(){
+                console.log('mosemove');
+            }
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

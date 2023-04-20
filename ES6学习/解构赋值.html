@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>解构赋值</title>
+</head>
+<body>
+    <script>
+  //1.数组的解构
+/*   const F4 =['小沈阳','刘能','赵四','宋小宝']
+  let[xiao,liu,zhao,song]=F4;
+  console.log(xiao)           */                                                            
+  //2.对象的解构         
+  const zhao ={
+      name:'赵本山',
+      age:'111',
+      xiaopin:function(){
+          console.log('我可以演小品');
+      }
+  }
+  let {xiaopin} = zhao;
+  xiaopin();
+    </script>                    
+</body>
+</html>

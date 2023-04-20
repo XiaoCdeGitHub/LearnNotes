@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let a;
+        let b,c,d;
+        let e = 100;
+        let f = 521,g = 'i love you ',h = [];
+        //1.变量不能重复声明
+        //2.块级作用域 全局，函数，eval（es5严格模式）
+        {
+            let girlfriend = '刘嘉怡';
+        }
+        //3.不存在变量提升
+        // console.log(song);
+        // var song = '恋爱达人'
+        // console.log(music);
+        // let music = '浪漫主义';
+        //4.不影响作用域链
+        {
+            let school ='太原理工';
+            function fn(){
+                console.log(school)
+            }
+            fn();
+        }
+    </script>
+</body>
+</html>

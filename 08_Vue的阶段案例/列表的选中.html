@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<style>
+    .active{
+        color:red
+    }
+</style>
+<body>
+    <div id="app">
+        <ul>
+            <li :class="{active: index === currentIndex}"
+            @click="liClick(index)"
+            v-for="(item,index) in movies">
+                {{item}}
+            </li>
+        </ul>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                movies:['111','22','333','444'],
+                currentIndex:-1
+            }
+        },
+        methods: {
+liClick(index){
+    console.log(index);
+    this.currentIndex = index
+}
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

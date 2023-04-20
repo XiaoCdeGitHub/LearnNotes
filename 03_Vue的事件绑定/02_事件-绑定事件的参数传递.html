@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{message}}</h2>
+        <button @click="btn1Click">按钮一</button>
+        <button @click="btn2Click('why',18,length)">按钮二</button>
+        <button @click="btn3Click('why',18,$event)">按钮三</button>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                length:19
+            }
+        },methods: {
+            btn1Click(event){
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:27 ~ btn1Click ~ event:", event)
+                
+            } , btn2Click(name,age,length){
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:32 ~ btn2Click ~ length:", length)
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:31 ~ btn2Click ~ name,age:", name,age)
+                
+            },btn3Click(name,age,event){
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:37 ~ btn3Click ~ event:", event)
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:37 ~ btn3Click ~ age:", age)
+                console.log("🚀 ~ file: 02_事件-绑定事件的参数传递.html:37 ~ btn3Click ~ name:", name)
+            } 
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <label for="agree">
+            <input id="agree" type="checkbox" v-model="isAgree">同意协议
+        </label>
+        <h2>单选框：{{isAgree}}</h2>
+
+<hr>
+<!-- 多选框 绑定到属性中的值是数组-->
+<!-- 多选框中 必须明确的绑定一个value值 -->
+    <div class="hobbies">
+        <h2>请选择你的爱好</h2>
+        <label for="sing">
+            <input type="checkbox" v-model="hobbies" id="sing" value="sing">唱
+        </label>
+        <label for="jump">
+            <input type="checkbox" v-model="hobbies" id="jump" value="jump">跳
+        </label>
+        <label for="rap">
+            <input type="checkbox" v-model="hobbies" id="rap" value="rap">rap
+        </label>
+        <label for="basketball">
+            <input type="checkbox" v-model="hobbies" id="basketball" value="basketball">篮球
+        </label>
+        <h2>爱好：{{hobbies}}</h2>
+    </div>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                isAgree:false,
+                hobbies:[]
+            }
+        },
+        methods: {
+
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

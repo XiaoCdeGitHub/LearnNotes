@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<style>
+    img{
+        width: 100px;
+        height: 100px;
+        
+    }
+</style>
+<body>
+    <div id="app">
+        <h2>{{message}}</h2>
+        <div>
+            <button @click="toggle">切换</button>
+        </div>
+       <div v-show="isShowCode"> 
+        <img src="https://cd-mapbed.oss-cn-beijing.aliyuncs.com/preview.gif" alt="">
+       </div>
+       
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                isShowCode:true
+            }
+        },
+        methods: {
+            toggle(){
+                this.isShowCode = !this.isShowCode;
+            }
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>

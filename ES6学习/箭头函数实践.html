@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箭头函数实践</title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            background: #58a;
+        }
+    </style>
+</head>
+<body>
+<div id="ad"></div>
+    <script>
+    //1.点击两秒后变色
+    let ad = document.getElementById("ad");
+    ad.addEventListener("click", function(){
+         //保存 this 的值,定时器this指向全局
+        let _this = this;
+        setTimeout(function(){
+            _this.style.backgroundColor='pink';
+        }, 2000);
+    })
+    </script>
+</body>
+</html>

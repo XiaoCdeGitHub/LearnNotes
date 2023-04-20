@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+       <p>{{title}}</p>
+       <h2>{{content}}</h2>
+
+       <p>{{title}}</p>
+       <h2>{{content}}</h2>
+        
+       <p>{{title}}</p>
+       <h2>{{content}}</h2>
+
+       <!-- 使用productItem组件 -->
+       <product-item></product-item>
+    </div>
+
+        <!-- 创建product-item模板 -->
+    <template id="item">
+        <div>
+            <h1>我是一个新的组件</h1><h1>我是一个新的组件</h1><h1>我是一个新的组件</h1><h1>我是一个新的组件</h1> 
+        </div>
+    </template>
+    <script src="../lib/vue.js"></script>
+<script>
+    //1.组件：App组件(根组件)
+    const App={
+        data() {
+            return {
+                title:'我是标题',
+                content:'我是内容'
+            }
+        },
+        methods: {
+
+        },
+    }
+    //2.开发product-item组件
+    const productItem ={
+        template:'#item'
+    }
+    
+    //3.创建app
+    const app = Vue.createApp(App)
+    //4.注册一个全局组件
+    app.component('productItem',productItem)
+
+    //2.挂载app
+    app.mount("#app")
+</script>
+</body>
+
+
+</html>

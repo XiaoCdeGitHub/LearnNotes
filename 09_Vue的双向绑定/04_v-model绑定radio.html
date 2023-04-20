@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="gender">
+            <label for="male">
+                <input type="radio" id="male" name="gender" v-model="gender" value="male">男
+            </label>
+            <label for="female">
+                <input type="radio" id="female" name="gender" v-model="gender" value="famale">女
+            </label>
+            <h2>xingbie:{{gender}}</h2>
+        </div>
+    </div>
+</body>
+<script src="../lib/vue.js"></script>
+<script>
+    //1.创建app
+    const app = Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue',
+                gender:''
+            }
+        },
+        methods: {
+
+        },
+    })
+    //2.挂载app
+    app.mount("#app")
+</script>
+
+</html>
