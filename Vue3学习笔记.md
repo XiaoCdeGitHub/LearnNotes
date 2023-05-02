@@ -430,3 +430,44 @@ vue.config.js 配置webpack
 
 .vue文件由vue-loader加载
 template->createVnode 
+
+
+**组件的通信**
+
+父传子：props属性
+子传父：$emit
+
+***父传子：***
+父组件： 
+<ShowInfo name="脆脆鲨" age="18" height="1.88"></ShowInfo>
+子组件：props:['name','age','height'],//数组语法
+
+props用于接收父组件传递的属性，可以在组件上注册一些自定义的attribute，父组件给attribute赋值，子组件通过attribute的名称获取到对应的值； 
+
+什么是非Prop的Attribute呢?
+当我们传递给一个组件某个属性，但是该属性并没有定义对应的props或者emits时，就称之为非Prop的Attribute;常见的包括class、style、id属性等;
+
+会默认的添加到子组件的根元素上
+
+inheritAttrs:false 禁用添加
+$attrs.address 取非prop的attribute属性 
+多个根时，可以用v-bind='$attrs'
+
+***子传父：***
+子组件内有事件发生，父组件需要切换内容
+子组件给父组件传递内容
+
+this.$emit('add', count)
+第一个参数是自定义的事件名称
+第二个参数是传递的参数
+
+optionsAPI  
+emits: ['add'] 数组语法
+对象语法：进行自定义事件的参数验证
+    emits:{
+    add(count){
+        if (count<10){
+            return true
+        }
+    }
+},
