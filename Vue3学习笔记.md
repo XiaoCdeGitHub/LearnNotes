@@ -471,3 +471,57 @@ emits: ['add'] 数组语法
         }
     }
 },
+
+
+**插槽Slot**
+
+让使用者可以决定某一区域到底存放什么内容和元素
+
+抽取共性 预留不同
+
+插槽的默认内容
+
+如果没有插入对应内容
+
+***具名插槽：***
+多个插槽时使用具名插槽 若没有名字则默认为default
+父组件：
+<template v-slot:left>
+    <button>返回</button>
+</template>
+
+子组件：
+  <slot name="left">left</slot>
+
+***动态插槽名：***
+通过v-slot:[dynamicSlotName]方式动态绑定一个名称
+
+v-slot:可以缩写为#
+
+***渲染作用域***
+
+数据写在哪里即在哪里编译，所以数据是在当前渲染作用域下寻找
+无法跨作用域寻找
+
+***作用域插槽***
+子组件slot标签内用v-bind绑定属性
+父组件v-slot:defalut="props"
+
+子组件：
+<slot :item="item">
+        <span>{{ item }}</span>
+</slot>
+
+父组件：
+<template #default="props">
+<button>{{ props.item }}</button>
+</template>
+
+独占默认插槽的简写：
+<template v-slot:defult="props"></template>
+简写为：
+<template v-slot="props"></template>
+template的作用：找到defult以及props绑定的数据
+假如只有一个插槽 可以不写template
+
+如果有默认插槽和具名插槽 按照完整的template来写
