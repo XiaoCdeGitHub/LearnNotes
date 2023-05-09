@@ -525,3 +525,99 @@ template的作用：找到defult以及props绑定的数据
 假如只有一个插槽 可以不写template
 
 如果有默认插槽和具名插槽 按照完整的template来写
+
+
+**非父子通信-Provide和Inject的使用**
+
+Provide/Inject用于非父子组件之间共享数据:
+比如有一些深度嵌套的组件，子组件想要获取父组件的部分内容;
+在这种情况下，如果我们仍然将props沿着组件链逐级传递下去，就会非常的麻烦;
+一个父组件相对于其所有的后代组件，会作为依赖提供者。任何后代的组件树，无论层级有多深，都可以注入由父组件提供给整条链路的依赖。
+
+对于这种情况下，我们可以使用Provide和 Inject :
+无论层级结构有多深，父组件都可以作为其所有子组件的依赖
+提供者;
+父组件有一个provide选项来提供数据;
+子组件有一个inject选项来开始使用这些数据;
+
+父组件不知道哪些子组件用了 子组件不知道inject的property来自哪里
+
+
+如果Provide中提供的一些数据是来自data，那么我们可能会想要通过this来获取 
+data(){
+    return{
+        message:'脆脆鲨真帅'
+    }
+},
+provide(){
+    return{
+    name:'Why',
+    age:'18',
+    message:this.message
+    }
+}
+
+如果是对象写法 this绑定错误 即会失效
+
+我们先来验证一个结果:如果我们修改了this.names的内容，那么使用length的子组件会不会是响应式的?我们会发现对应的子组件中是没有反应的:
+这是因为当我们修改了names之后，之前在provide中引入的this.names.length本身并不是响应式的;那么怎么样可以让我们的数据变成响应式的呢?
+非常的简单，我们可以使用响应式的一些API来完成这些功能，比如说computed函数;
+当然，这个computed是vue3的新特性
+注意:我们在使用length的时候需要获取其中的value
+这是因为computed返回的是一个ref对象，需要取出其中的value来使用;
+
+**事件总线的基本使用**
+
+event-bus 
+
+App.vue
+  created() {
+        //事件监听
+        eventBus.on('whyEvent', (name, age, height) => {
+            console.log('whyEvent事件在app中监听', name, age, height);
+            this.message = `name: ${name},age: ${age},height: ${height}`;
+        })
+    }
+
+HomeBanner.vue
+methods: {
+        bannerClick() {
+            console.log('bannerClick');
+            eventBus.emit('whyEvent', 'why', 18, 1.88)
+        }
+    }
+
+
+
+移除监听
+Category.vue
+  methods:{
+        whyEventHandler(){
+            console.log('whyEvent在category中被监听');
+
+        }
+    },
+    created(){
+        eventBus.on('whyEvent', this.whyEventHandler)
+    },
+    unmounted(){
+        console.log('category unmounted');
+        eventBus.off('whyEvent',this.whyEventHandler)
+    }
+
+生命周期 组件中ref的引用 动态组件的使用 keep-alive组件 异步组件的引用
+
+组件的v-model 组件的混入Mixin
+
+
+**生命周期**
+
+什么是生命周期呢?
+  生物学上，生物生命周期指得是一个生物体在生命开始到结束周而复始所历经的一系列变化过程;每个组件都可能会经历从创建、挂载、更新、卸载等一系列的过程;
+  在这个过程中的某一个阶段，我们可能会想要添加一些属于自己的代码逻辑（比如组件创建完后就请求一些服务器数据);
+  但是我们如何可以知道目前组件正在哪一个过程呢? Vue给我们提供了组件的生命周期函数;
+
+生命周期函数:
+ 生命周期函数是一些钩子函数(回调函数)，在某个时间会被Vue源码内部进行回调;通过对生命周期函数的回调，我们可以知道目前组件正在经历什么阶段;
+ 那么我们就可以在该生命周期中编写属于自己的逻辑代码了;
+ 

@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './07_组件插槽-作用域插槽/App.vue'
+import App from './09_事件总线的使用/App.vue'
 
 createApp(App).mount('#app')
 
