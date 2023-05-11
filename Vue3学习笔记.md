@@ -589,7 +589,7 @@ methods: {
 
 
 
-移除监听
+//移除监听
 Category.vue
   methods:{
         whyEventHandler(){
@@ -626,6 +626,87 @@ Category.vue
  unmounted 回收操作 取消事件监听
 
 
- 
+
+$refs的使用
+
+某些情况下，我们在组件中想要直接获取到元素对象或者子组件实例:在Vue开发中我们是不推荐进行原生DOM操作的;
+这个时候，我们可以给元素或者组件绑定一个ref的attribute属性;
+<h2 ref="title" class="title" :style="{color:titleColor}">Hello {{message}}</h2>
+        <button ref="btn" @click="changeMessage">changeMessage</button>
+    
+methods:{
+        changeMessage(){
+         /*    this.message = '脆脆鲨超级无极大帅哥',
+            this.titleColor = 'blue' */
+            console.log(this.$refs.title);
+            console.log(this.$refs.btn);
+        }
+    }
+
+也可以获取组件实例
+获取到的是四个不同的instance实例
+由同一个模板创建（export default）
+this.$ref.banner
+this.$ref.banner
+this.$ref.banner
+this.$ref.banner
+
+vue用对象的形式实现类 
+
+在父组件中可以调用子组件的对象方法
+this.$ref.banner.bannerClick()
+
+获取banner中的元素
+this.$ref.banner.$el
+
+vue2不允许有多个根 vue3支持
+多个根时
+this.$ref.banner.$el 获取到的是第一个node节点
+
+this.$ref.banner.$el.nextElementSibling
 
 
+组件实例还有两个属性：
+
+this.$parent获取父组件
+this.$root 获取根组件
+vue3已经移除了$children
+
+**动态组件**
+
+动态组件是使用component组件，通过一个特殊的attribute is 来实现:
+<component is='Home'></component>
+is中的组件需要来自两个地方
+1.全局注册的组件
+2.局部注册的组件
+
+<component :is='tabs[currentIndex]'></component>
+
+***动态组件传递数据***
+
+同正常组件传参
+写在component标签内
+
+**keep-alive**
+来回创建销毁组件性能消耗太高
+<keep-alive></keep-alive>
+将组件缓存起来
+<keep-alive include="home,about"></keep-alive>
+组件的名称来自组件定义的时的name属性
+子组件内部
+name:"home"
+
+
+keep-alive有一些属性:
+include - string | RegExp | Array。只有名称匹配的组件会被缓存;exclude - string | RegExp | Array。任何名称匹配的组件都不会被缓存;max - number | string。最多可以缓存多少组件实例，一旦达到这个数字，那么缓存组件中最近没有被访问的实例会被销毁;
+include和exclude prop 允许组件有条件地缓存:
+二者都可以用逗号分隔字符串、正则表达式或一个数组来表示;匹配首先检查组件自身的name选项;
+
+
+缓存的生命周期
+对于保持keep-alive的组件 监听有没有进行切换
+keep-alive 组件进入活跃状态
+activated(){}
+
+离开
+deactivated{}
