@@ -710,3 +710,134 @@ activated(){}
 
 离开
 deactivated{}
+
+**Vue项目打包-webpack的分包处理**
+
+默认的打包过程;
+默认情况下，在构建整个组件树的过程中，因为组件和组件之间是通过模块化直接依赖的，那么webpack在打包时就会将组件模块打包到一起(比如一个app.js文件中);
+这个时候随着项目的不断庞大，app.js文件的内容过大，会造成首屏的渲染速度变慢;
+打包时，代码的分包:
+所以，对于一些不需要立即使用的组件，我们可以单独对它们进行拆分，拆分成一些小的代码块chunk.js;这些chunk.,js会在需要时从服务器加载下来，并且运行代码，显示对应的内容;
+
+import函数可以让webpack对导入文件进行分包处理
+
+import('./utils/math').then(res=>{
+    res.sum(20,30)
+})
+//import返回的是一个Promise对象
+
+如果我们的项目过大了，对于某些组件我们希望通过异步的方式来进行加载（目的是可以对其进行分包处理)，那么Vue中给我们提供了一个函数: defineAsyncComponent.
+defineAsyncComponent接受两种类型的参数:
+类型一:工厂函数，该工厂函数需要返回一个Promise对象;
+类型二:接受一个对象类型，对异步函数进行配置;
+
+对组件进行分包
+
+import {defineAsyncComponent} from 'vue'
+
+const AsyncComponent = defineAsyncComponent(()=>import('./views/Category.vue'))
+
+**组件的v-model**
+
+前面我们在input中可以使用v-model来完成双向绑定:
+这个时候往往会非常方便，因为v-model默认帮助我们完成了两件事;v-bind:value的数据绑定和@input的事件监听;
+如果我们现在封装了一个组件，其他地方在使用这个组件时，是否也可以使用v-model来同时完成这两个功能呢?口也是可以的，vue也支持在组件上使用v-model;
+
+那么，为了我们的Mylnput组件可以正常的工作，这个组件内的<input>必须:将其value attribute绑定到一个名叫 modelValue 的 prop 上;
+在其input事件被触发时，将新的值通过自定义的update:modelValue事件抛出;
+
+
+modelValue是固定的 写死的
+
+
+我们现在通过v-model是直接绑定了一个属性，如果我们希望绑定多个属性呢?也就是我们希望在一个组件上使用多个v-model是否可以实现呢?
+我们知道，默认情况下的v-model其实是绑定了modelValue属性和@update:modelValue的事件;如果我们希望绑定更多，可以给v-model传入一个参数，那么这个参数的名称就是我们绑定属性的名称;注意:这里我是绑定了两个属性的
+v-model:title相当于做了两件事:
+<my-input v-model="message" v-model:title="title"/>
+绑定了title属性;
+监听了@update:title的事件;
+
+**认识Mixin**
+
+目前我们是使用组件化的方式在开发整个Vue的应用程序，但是组件和组件之间有时候会存在相同的代码逻辑，我们希望对相同的代码逻辑进行抽取。
+在Vue2和Vue3中都支持的一种方式就是使用Mixin来完成:
+Mixin提供了一种非常灵活的方式，来分发Vue组件中的可复用功能;一个Mixin对象可以包含任何组件选项;
+当组件使用Mixin对象时，所有Mixin对象的选项将被混合进入该组件本身的选项中;
+
+
+Mixin的合并规则
+如果Mixin对象中的选项和组件对象中的选项发生了冲突，那么Vue会如何操作呢?这里分成不同的情况来进行处理;
+情况一:如果是data函数的返回值对象口返回值对象默认情况下会进行合并;
+如果data返回值对象的属性发生了冲突，那么会保留组件自身的数据;情况二:如何生命周期钩子函数
+口生命周期的钩子函数会被合并到数组中，都会被调用;
+情况三:值为对象的选项，例如 methods、components和directives，将被合并为同一个对象,
+比如都有methods选项，并且都定义了方法，那么它们都会生效;
+但是如果对象的key相同，那么会取组件对象的键值对;
+
+
+**CompositionAPI**
+主要围绕Setup函数的基本使用
+
+相对应的是传统的Options API
+export default{
+    //Options API
+    data(){
+        return {counter:100}
+    },
+    props:{},
+    components:{},
+    methods:{
+        changeCounter(){
+            counter += 100;
+        }
+    },
+    computed:{},
+    watch:{
+        counter(newValue,oldValue){}
+    },
+    created:{},
+    mixins:{},
+}
+对counter的操作太散了
+
+setup(){
+    function userCounter(){
+    const counter = ref(100)
+    const doubleCounter = computed(()=>counter.value*2)
+    const changeCounter =()=>{}
+    watch()
+    }
+    useCounter()
+}
+在Vue2中，我们编写组件的方式是Options API:
+Options API的一大特点就是在对应的属性中编写对应的功能模块;
+比如data定义数据、methods中定义方法、computed中定义计算属性、 watch中监听属性改变，也包括生命周期钩子;但是这种代码有一个很大的弊端:
+当我们实现某一个功能时，这个功能对应的代码逻辑会被拆分到各个属性中;
+当我们组件变得更大、更复杂时，逻辑关注点的列表就会增长，那么同一个功能的逻辑就会被拆分的很分散;
+尤其对于那些一开始没有编写这些组件的人来说，这个组件的代码是难以阅读和理解的（阅读组件的其他人);
+
+***setup函数的参数***
+我们先来研究一个setup函数的参数，它主要有两个参数:第一个参数: props
+第二个参数: context
+props非常好理解，它其实就是父组件传递过来的属性会被放到props对象中，我们在setup中如果需要使用，那么就可以直接通过props参数获取:
+对于定义props的类型，我们还是和之前的规则是一样的，在props选项中定义;并且在template中依然是可以正常去使用props中的属性，比如message;
+如果我们在setup函数中想要使用props，那么不可以通过 this 去获取（后面我会讲到为什么)﹔因为props有直接作为参数传递到setup函数中，所以我们可以直接通过参数来使用即可;
+另外一个参数是context，我们也称之为是一个SetupContext，它里面包含三个属性:attrs:所有的非prop的attribute;
+slots:父组件传递过来的插槽(这个在以渲染函数返回时会有作用，后面会讲到);
+emit:当我们组件内部需要发出事件时会用到emit(因为我们不能访问this，所以不可以通过 this.$emit发出事件);
+
+setup函数的返回值
+
+
+***reactive函数***
+reactive函数 定义复杂类型的数据
+如果想为在setup中定义的数据提供响应式的特性，那么我们可以使用reactive的函数;
+const state =  reactive({
+    name :  "coderwhy" ,
+    counter: 100
+})
+
+那么这是什么原因呢?为什么就可以变成响应式的呢?
+这是因为当我们使用reactive函数处理我们的数据之后，数据再次被使用时就会进行依赖收集;
+当数据发生改变时，所有收集到的依赖都是进行对应的响应式操作（比如更新界面);
+事实上，我们编写的data选项，也是在内部交给了reactive函数将其编程响应式对象的;
