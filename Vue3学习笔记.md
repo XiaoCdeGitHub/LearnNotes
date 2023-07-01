@@ -431,15 +431,15 @@ vue.config.js 配置webpack
 .vue文件由vue-loader加载
 template->createVnode 
 
-
-**组件的通信**
+## **组件的通信**
 
 父传子：props属性
 子传父：$emit
 
-***父传子：***
+### ***父传子：***
+
 父组件： 
-<ShowInfo name="脆脆鲨" age="18" height="1.88"></ShowInfo>
+<ShowInfo name="脆脆鲨" age="20" height="1.70" ></ShowInfo>
 子组件：props:['name','age','height'],//数组语法
 
 props用于接收父组件传递的属性，可以在组件上注册一些自定义的attribute，父组件给attribute赋值，子组件通过attribute的名称获取到对应的值； 
@@ -453,7 +453,8 @@ inheritAttrs:false 禁用添加
 $attrs.address 取非prop的attribute属性 
 多个根时，可以用v-bind='$attrs'
 
-***子传父：***
+### ***子传父：***
+
 子组件内有事件发生，父组件需要切换内容
 子组件给父组件传递内容
 
@@ -472,8 +473,7 @@ emits: ['add'] 数组语法
     }
 },
 
-
-**插槽Slot**
+## **插槽Slot**
 
 让使用者可以决定某一区域到底存放什么内容和元素
 
@@ -483,9 +483,11 @@ emits: ['add'] 数组语法
 
 如果没有插入对应内容
 
-***具名插槽：***
+### ***具名插槽：***
+
 多个插槽时使用具名插槽 若没有名字则默认为default
 父组件：
+
 <template v-slot:left>
     <button>返回</button>
 </template>
@@ -493,17 +495,19 @@ emits: ['add'] 数组语法
 子组件：
   <slot name="left">left</slot>
 
-***动态插槽名：***
+### ***动态插槽名：***
+
 通过v-slot:[dynamicSlotName]方式动态绑定一个名称
 
 v-slot:可以缩写为#
 
-***渲染作用域***
+### ***渲染作用域***
 
 数据写在哪里即在哪里编译，所以数据是在当前渲染作用域下寻找
 无法跨作用域寻找
 
-***作用域插槽***
+### ***作用域插槽***
+
 子组件slot标签内用v-bind绑定属性
 父组件v-slot:defalut="props"
 
@@ -526,8 +530,7 @@ template的作用：找到defult以及props绑定的数据
 
 如果有默认插槽和具名插槽 按照完整的template来写
 
-
-**非父子通信-Provide和Inject的使用**
+## **非父子通信-Provide和Inject的使用**
 
 Provide/Inject用于非父子组件之间共享数据:
 比如有一些深度嵌套的组件，子组件想要获取父组件的部分内容;
@@ -566,7 +569,7 @@ provide(){
 注意:我们在使用length的时候需要获取其中的value
 这是因为computed返回的是一个ref对象，需要取出其中的value来使用;
 
-**事件总线的基本使用**
+## **事件总线的基本使用**
 
 event-bus 
 
@@ -609,8 +612,7 @@ Category.vue
 
 组件的v-model 组件的混入Mixin
 
-
-**生命周期**
+## **生命周期**
 
 什么是生命周期呢?
   生物学上，生物生命周期指得是一个生物体在生命开始到结束周而复始所历经的一系列变化过程;每个组件都可能会经历从创建、挂载、更新、卸载等一系列的过程;
@@ -620,20 +622,21 @@ Category.vue
 生命周期函数:
  生命周期函数是一些钩子函数(回调函数)，在某个时间会被Vue源码内部进行回调;通过对生命周期函数的回调，我们可以知道目前组件正在经历什么阶段;
  那么我们就可以在该生命周期中编写属于自己的逻辑代码了;
- 
+
  created发送网络请求 事件监听 this.$watch
  mounted 元素已经被挂载 获取DOM使用DOM
  unmounted 回收操作 取消事件监听
 
 
 
-$refs的使用
+## $refs的使用
 
 某些情况下，我们在组件中想要直接获取到元素对象或者子组件实例:在Vue开发中我们是不推荐进行原生DOM操作的;
 这个时候，我们可以给元素或者组件绑定一个ref的attribute属性;
+
 <h2 ref="title" class="title" :style="{color:titleColor}">Hello {{message}}</h2>
         <button ref="btn" @click="changeMessage">changeMessage</button>
-    
+
 methods:{
         changeMessage(){
          /*    this.message = '脆脆鲨超级无极大帅哥',
@@ -672,7 +675,7 @@ this.$parent获取父组件
 this.$root 获取根组件
 vue3已经移除了$children
 
-**动态组件**
+## **动态组件**
 
 动态组件是使用component组件，通过一个特殊的attribute is 来实现:
 <component is='Home'></component>
@@ -711,13 +714,13 @@ activated(){}
 离开
 deactivated{}
 
-**Vue项目打包-webpack的分包处理**
+## **Vue项目打包-webpack的分包处理**
 
 默认的打包过程;
 默认情况下，在构建整个组件树的过程中，因为组件和组件之间是通过模块化直接依赖的，那么webpack在打包时就会将组件模块打包到一起(比如一个app.js文件中);
 这个时候随着项目的不断庞大，app.js文件的内容过大，会造成首屏的渲染速度变慢;
 打包时，代码的分包:
-所以，对于一些不需要立即使用的组件，我们可以单独对它们进行拆分，拆分成一些小的代码块chunk.js;这些chunk.,js会在需要时从服务器加载下来，并且运行代码，显示对应的内容;
+所以，对于一些不需要立即使用的组件，我们可以单独对它们进行拆分，拆分成一些小的代码块chunk.js;这些chunk.js会在需要时从服务器加载下来，并且运行代码，显示对应的内容;
 
 import函数可以让webpack对导入文件进行分包处理
 
@@ -737,11 +740,11 @@ import {defineAsyncComponent} from 'vue'
 
 const AsyncComponent = defineAsyncComponent(()=>import('./views/Category.vue'))
 
-**组件的v-model**
+## **组件的v-model**
 
 前面我们在input中可以使用v-model来完成双向绑定:
 这个时候往往会非常方便，因为v-model默认帮助我们完成了两件事;v-bind:value的数据绑定和@input的事件监听;
-如果我们现在封装了一个组件，其他地方在使用这个组件时，是否也可以使用v-model来同时完成这两个功能呢?口也是可以的，vue也支持在组件上使用v-model;
+如果我们现在封装了一个组件，其他地方在使用这个组件时，是否也可以使用v-model来同时完成这两个功能呢?也是可以的，vue也支持在组件上使用v-model;
 
 那么，为了我们的Mylnput组件可以正常的工作，这个组件内的<input>必须:将其value attribute绑定到一个名叫 modelValue 的 prop 上;
 在其input事件被触发时，将新的值通过自定义的update:modelValue事件抛出;
@@ -757,7 +760,7 @@ v-model:title相当于做了两件事:
 绑定了title属性;
 监听了@update:title的事件;
 
-**认识Mixin**
+## **认识Mixin**
 
 目前我们是使用组件化的方式在开发整个Vue的应用程序，但是组件和组件之间有时候会存在相同的代码逻辑，我们希望对相同的代码逻辑进行抽取。
 在Vue2和Vue3中都支持的一种方式就是使用Mixin来完成:
@@ -767,15 +770,16 @@ Mixin提供了一种非常灵活的方式，来分发Vue组件中的可复用功
 
 Mixin的合并规则
 如果Mixin对象中的选项和组件对象中的选项发生了冲突，那么Vue会如何操作呢?这里分成不同的情况来进行处理;
-情况一:如果是data函数的返回值对象口返回值对象默认情况下会进行合并;
-如果data返回值对象的属性发生了冲突，那么会保留组件自身的数据;情况二:如何生命周期钩子函数
-口生命周期的钩子函数会被合并到数组中，都会被调用;
+情况一:如果是data函数的返回值对象，返回值对象默认情况下会进行合并;
+如果data返回值对象的属性发生了冲突，那么会保留组件自身的数据;
+情况二:如何生命周期钩子函数
+生命周期的钩子函数会被合并到数组中，都会被调用;
 情况三:值为对象的选项，例如 methods、components和directives，将被合并为同一个对象,
 比如都有methods选项，并且都定义了方法，那么它们都会生效;
 但是如果对象的key相同，那么会取组件对象的键值对;
 
+## **CompositionAPI**
 
-**CompositionAPI**
 主要围绕Setup函数的基本使用
 
 相对应的是传统的Options API
@@ -816,8 +820,10 @@ Options API的一大特点就是在对应的属性中编写对应的功能模块
 当我们组件变得更大、更复杂时，逻辑关注点的列表就会增长，那么同一个功能的逻辑就会被拆分的很分散;
 尤其对于那些一开始没有编写这些组件的人来说，这个组件的代码是难以阅读和理解的（阅读组件的其他人);
 
-***setup函数的参数***
-我们先来研究一个setup函数的参数，它主要有两个参数:第一个参数: props
+## ***setup函数的参数***
+
+我们先来研究一个setup函数的参数，它主要有两个参数:
+第一个参数: props
 第二个参数: context
 props非常好理解，它其实就是父组件传递过来的属性会被放到props对象中，我们在setup中如果需要使用，那么就可以直接通过props参数获取:
 对于定义props的类型，我们还是和之前的规则是一样的，在props选项中定义;并且在template中依然是可以正常去使用props中的属性，比如message;
@@ -828,8 +834,8 @@ emit:当我们组件内部需要发出事件时会用到emit(因为我们不能�
 
 setup函数的返回值
 
+## ***reactiveAPI***
 
-***reactive函数***
 reactive函数 定义复杂类型的数据
 如果想为在setup中定义的数据提供响应式的特性，那么我们可以使用reactive的函数;
 const state =  reactive({
@@ -841,3 +847,24 @@ const state =  reactive({
 这是因为当我们使用reactive函数处理我们的数据之后，数据再次被使用时就会进行依赖收集;
 当数据发生改变时，所有收集到的依赖都是进行对应的响应式操作（比如更新界面);
 事实上，我们编写的data选项，也是在内部交给了reactive函数将其编程响应式对象的;
+
+## ***Ref API***
+
+reactive API对传入的类型是有限制的，它要求我们必须传入的是一个对象或者数组类型:如果我们传入一个基本数据类型(String、Number、Boolean）会报一个警告;
+value cannot be made reactive: Hello world
+这个时候Vue3给我们提供了另外一个API: ref API
+ref 会返回一个**可变的响应式对象**，该对象作为一个响应式的引用维护着它内部的值，这就是ref名称的来源;它内部的值是在ref的value属性中被维护的;
+const message = ref( "Hello World");
+这里有两个注意事项:
+在模板中引入ref的值时，Vue会自动帮助我们进行解包操作，所以我们并不需要在模板中通过ref.value的方式来使用;
+但是在setup 函数内部，它依然是一个ref引用，所以对其进行操作时，我们依然需要使用ref.value的方式;
+
+
+ref是浅层解包
+const info = {
+    counter 
+}
+
+template中使用时不需要写.value 修改时需要些.value vue目前不一致的地方
+
+## ***readonly***
