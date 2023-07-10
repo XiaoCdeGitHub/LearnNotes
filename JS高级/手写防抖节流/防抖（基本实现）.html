@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button></button><input type="text">
+    <script>
+            /**
+             * 1.需要接收什么参数
+             * 参数一：回调的函数
+             * 参数二：延迟时间delay
+             * 2.有什么返回值
+             * 返回一个新的函数
+             * 3.内部实现
+             * 
+             * **/
+        function myDebounce(fn,dealy){
+            //1.用于记录上一次事件触发的timer 
+            let timer = null
+            //2.触发事件时执行的函数
+            const _debounce = () =>{
+                //timer代表一个延迟事件执行的过程
+                //2.1本质是下一次事件取消了上一次事件的执行
+                if(timer)clearTimeout(timer)
+               
+                //2.2延迟去执行对应的fn函数（传入的回调函数）
+                timer =  setTimeout(()=>{
+                    fn();
+                    timer = null;//执行过函数之后，讲timer重新置为null
+                },dealy)
+            }
+            return _debounce
+        }
+
+    </script>
+    <script>
+        const inputE1 = document.querySelector('input');
+        let counter = 1 ;
+        inputE1.oninput = myDebounce(function(){
+            console.log(`发送网络请求${counter++}`);    
+        },1000)
+</script>
+</body>
+</html>
