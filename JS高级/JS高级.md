@@ -55,3 +55,56 @@ JS中闭包
 很简单 将函数的指向改为null
 foo = null
 fn = null
+
+
+
+
+JS编译顺序
+
+1.代码被解析，v8引擎会帮助我们创建一个对象，（GlobalObject -> go)  发生在源代码转换为AST抽象语法树的过程中![image-20230322141528601](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230322141528601.png)
+
+其中包含了String Date setTimeout 函数 window对象（指向Globalobject) 以及需要被解析的js代码的属性，但此时所有属性值都为undefined
+
+2.运行代码
+
+2.1为了执行代码，v8引擎内部会有一个执行上下文栈（函数调用栈） Execution Context Stack 
+
+2.2 因为我们执行的是全局代码，为了全局代码能够正常的执行，需要创建 全局执行上下文 （全局代码需要被执行时，也会创建）Global Execution Context 
+
+全局执行上下文内维护了 VO（variable Object ） 指向GO
+
+![image-20230322141633462](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230322141633462.png)
+
+当我们查找一个变量时，真实的查找路径是沿着作用域链来查找
+
+![image-20230322152029318](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230322152029318.png)
+
+
+
+防抖节流
+
+防抖（debounce）就是一直点回城，点回城就是触发操作
+
+事件触发的时候，相应的函数不会立即触发，而是会等待一定的时间；
+
+当事件密集触发时，函数的触发会被频繁的推迟；
+
+只有等待了一段时间也没有事件触发，才会真正的执行响应函数
+
+
+
+节流就是平a
+
+单位时间内 只会执行一次
+
+
+当事件触发时，会执行这个事件的响应函数
+如果这个事件会被频繁触发，那么节流函数会按照一定的频率来执行函数口不管在这个中间有多少次触发这个事件，执行函数的频繁总是固定的;
+
+
+
+ waitTime = interval -(nowTime-startTime)
+ if (waitTime <= 0) {
+    fn()
+    startTime = nowTime}
+    

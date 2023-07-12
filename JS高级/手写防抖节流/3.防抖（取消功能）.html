@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button>按钮</button>
+    <input type="text">
+    <button id="cancelBtn">取消</button>
+    <script>
+            /**
+             * 1.需要接收什么参数
+             * 参数一：回调的函数
+             * 参数二：延迟时间delay
+             * 2.有什么返回值
+             * 返回一个新的函数
+             * 3.内部实现
+             * 
+             * **/
+        function myDebounce(fn,dealy){
+            //1.用于记录上一次事件触发的timer 
+            let timer = null
+            //2.触发事件时执行的函数
+            const _debounce = function(...args){
+        //    console.log('_debounce的this绑定',this);
+
+                if(timer)clearTimeout(timer)
+                //timer代表一个延迟事件执行的过程
+                //本质是下一次事件取消了上一次事件的执行
+                //延迟去执行对应的fn函数（传入的回调函数）
+                timer =  setTimeout(()=>{
+                    fn.apply(this,args);
+                    timer = null;//执行过函数之后，讲timer重新置为null
+                },dealy)
+            }
+            //3.给_debounce绑定一个取消的函数
+            _debounce.cancel = function(){
+                if(timer)clearTimeout(timer)
+                timer = null
+                console.log('取消成功');
+            }
+            return _debounce
+        }
+
+    </script>
+    <script> 
+        const inputE1 = document.querySelector('input');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        let counter = 1 ;
+        const debounceFn  = myDebounce(function(event){
+            console.log(`发送网络请求${counter++}`,this.value,event);    
+        },5000)
+        inputE1.oninput = debounceFn;
+        cancelBtn.addEventListener('click',debounceFn.cancel)
+          
+</script>
+</body>
+</html>

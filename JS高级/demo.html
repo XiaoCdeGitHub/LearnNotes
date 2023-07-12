@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小试牛刀</title>
+</head>
+<body>
+    <button>按钮</button>
+    <input type="text">
+    <button id="cancelBtn">取消</button>
+    <script>
+        function myDebounce(fn,delay,immediate = true){
+    let timer = null;
+    let involved = false;
+    if(immediate ||){
+    function _debounce(...args){
+        if(timer)clearTimeout(timer)
+        timer = setTimeout(()=>{
+            fn.apply(this,args);
+            timer = null;
+        },delay)
+    }
+    _debounce.cancel = function(){
+        if(timer)clearTimeout(timer)
+        timer = null;
+        console.log('取消成功');
+    }
+        return _debounce
+        
+    
+        }
+        const inputE1 = document.querySelector('input');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        let counter = 1 ;
+        const debounceFn  = myDebounce(function(event){
+            console.log(`发送网络请求${counter++}`,this.value,event);    
+        },3000)
+        inputE1.oninput = debounceFn;
+        cancelBtn.addEventListener('click',debounceFn.cancel)
+    </script>
+</body>
+</html>
