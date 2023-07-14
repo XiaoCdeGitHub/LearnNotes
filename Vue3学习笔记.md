@@ -834,6 +834,10 @@ emit:当我们组件内部需要发出事件时会用到emit(因为我们不能�
 
 setup函数的返回值
 
+setup中不可以使用this，因为会找不到实例，但其实是其源码中没有绑定this
+
+
+
 ## ***reactiveAPI***
 
 reactive函数 定义复杂类型的数据
@@ -847,6 +851,8 @@ const state =  reactive({
 这是因为当我们使用reactive函数处理我们的数据之后，数据再次被使用时就会进行依赖收集;
 当数据发生改变时，所有收集到的依赖都是进行对应的响应式操作（比如更新界面);
 事实上，我们编写的data选项，也是在内部交给了reactive函数将其编程响应式对象的;
+
+reactive被解构后会变成普通的值
 
 ## ***Ref API***
 
@@ -868,3 +874,49 @@ const info = {
 template中使用时不需要写.value 修改时需要些.value vue目前不一致的地方
 
 ## ***readonly***
+
+单向数据流
+我们通过reactive或者ref可以获取到一个响应式的对象，但是某些情况下，我们传入给其他地方(组件)的这个响应式对象希望在另外一个地方(组件)被使用，但是不能被修改，这个时候如何防止这种情况的出现呢?
+口 Vue3为我们提供了readonly的方法
+口 readonly会返回原始对象的只读代理(也就是它依然是一个Proxy，这是一个proxy的set方法被劫持，并且不能对其进行修改
+
+口readonly返回的对象都是不允许修改的;
+口但是经过readonly处理的原来的对象是允许被修改的;
+√比如 const info = readonly(obj)，info对象是不允许被修改的当obj被修改时，
+readonly返回的info对象也会被修改;
+√ 但是我们不能去修改readonly返回的对象info
+
+
+本质上就是readlonly返回的对象的setter方法被劫持了而已
+ 
+isProxy 检查对象是否由reactive或readonly创建的proxy
+isReactive 检查对象是否是由reactive创建的响应式代理
+如果该代理是由readonly创建的，但包裹了由reactive创建的另一个代理，也会返回true
+返回
+isReadOnly
+toRaw
+shallowReactive 
+创建一个响应式代理，跟踪其自身property的响应性，但不执行嵌套对象的深层响应式
+shallowReadOnly
+
+
+## ***toRefs***
+
+reactive被解构后会变成普通的值，失去响应式
+const {name,age} = toRefs(name,age)
+
+ref中其他的API
+
+unref
+如果我们想要获取一个ref引用中的value，那么也可以通过unref方法口 如果参数是一个 ref，则返回内部值，否则返回参数本身口这是 val = isRef(val) ? val.value : val 的语法糖函数
+isRef
+口 判断值是否是一个ref对象
+shallowRef
+口创建一个浅层的ref对象
+
+triggerRef
+口 手动触发和 shallowRef 相关联的副作用
+
+## ***computed的函数使用***
+
+返回的也是ref
