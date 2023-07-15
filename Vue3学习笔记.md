@@ -920,3 +920,50 @@ triggerRef
 ## ***computed的函数使用***
 
 返回的也是ref
+
+
+## ***setup中使用ref以及生命周期***
+
+setup函数中，注册别的生命周期函数，直接使用导入的onX函数注册的生命周期钩子
+onMounted
+可以注册多个
+没有beforeCreate  created  直接在setup中操作
+setup围绕beforeCreate  created生命周期钩子运行，所以不需要显式地定义他们
+
+## ***Provide和Inject***
+
+共享的是ref 父组件改变数据 子组件也会改变
+
+## ***watch侦听数据的变化***
+```javascript
+import {ref,watch} from 'vue'
+export default{
+    setup(){
+
+    }
+}
+const message = ref("hello world")
+watch(message,(newValue,oldValue)=>{
+    console.log(newValue,oldValue)
+})
+watch(()=>message,(newValue,oldValue)=>{
+    console.log(newValue,oldValue)
+})
+watch(()=>({...message}),(newValue,oldValue)=>{
+    console.log(newValue,oldValue)
+})
+return {
+    message
+}
+()=>message 以函数形式进行监听会对依赖进行收集
+()=>({...message})将proxy对象改为普通对象
+```
+    
+## ***watchEffect收集数据***
+
+watchEffect传入的函数会默认被执行
+执行的过程中，会自动的收集依赖（依赖哪些响应式数据）
+只有收集的依赖变化时，函数才会再次执行
+
+停止监听：stopWatch()
+
