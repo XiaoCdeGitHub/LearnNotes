@@ -9,9 +9,11 @@
 
 <script>
 import useCounter from '../hooks/useCounter';
+import useTitle from '@/Setup-hooks练习/hooks/useTitle';
 
 export default {
     setup(){
+        useTitle('关于')
         return{
             ...useCounter()
         } 

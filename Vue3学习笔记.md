@@ -967,3 +967,12 @@ watchEffect传入的函数会默认被执行
 
 停止监听：stopWatch()
 
+## ***setup语法糖***
+setup语法糖的顶层的绑定，会暴漏给模板
+
+## defineProps()和 defineEmits()
+为了在声明 props 和emits 选项时获得完整的类型推断支持，我们可以使用 defineProps 和 defineEmits APl，它们将自动地在 <script setup>中可用
+
+## defineExpose()
+子组件实例暴露出去，父组件ref引用
+
