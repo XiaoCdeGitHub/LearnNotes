@@ -990,3 +990,178 @@ URL的hash
 
 
 
+## Pinia
+
+### mutation重要原则
+一条重要的原则就是要记住 mutation 必须是同步函数
+口 这是因为devtool工具会记录mutation的日记
+口每一条mutation被记录，devtools都需要捕捉到前一状态和后一状态的快照
+口但是在mutation中执行异步操作，就无法追踪到数据的变化
+
+### actions的基本使用
+
+Action类似于mutation，不同在于:
+口Action提交的是mutation，而不是直接变更状态口Action可以包含任意异步操作:
+
+ 这里有一个非常重要的参数context:
+口 context是一个和store实例均有相同方法和属性的context对象;
+口所以我们可以从其中获取到commit方法来提交一个mutation，或者通过context,state 和 context.getters 来获取 state和getters;
+但是为什么它不是store对象呢? 这个等到我们讲Modules时再具体来说;
+
+组件内通过dispatch派发action
+action内通过context.commit 提交mutation
+```js
+this.$store.dispatch("changeNameAction,"aaa)
+```
+
+
+**数据管理方式**
+
+
+1.从服务器请求拿到的数据，在对应的页面组件中进行维护
+discover.vue里面统一进行网络请求
+然后通过ref传递给子组件
+const banner = ref([])
+const recommend = ref([])
+const ranking = ref([])
+
+2.一个页面中的组件数据，抽到
+Vuex中管理store->state ={
+    banner:[],
+    recommend:[],
+    ranking:[]
+}
+
+
+
+
+### module的基本使用
+核心：抽离
+1.使用state时 需要state.moduleName.xxx
+{{$store.state.counter.count}}
+2.使用getters时，是直接getters.xxx
+{{$store.getters.doubleCount}}
+
+#### module的命名空间
+默认情况下，模块内部的action和mutation任然是注册在全局的命名空间中，这样使得多个模块可以同时对一个action或mutation作出响应；
+Getter同样也默认注册在全局命名空间；
+
+如果我们希望模块具有更高的封装度和复用性，可以添加 **namespaced: true** 的方式使其成为带命名空间的模块:
+当模块被注册后，它的所有 getter、action 及mutation 都会自动根据模块注册的路径调整命名;
+
+
+加上命名空间以后，getter使用：
+{{$store.getters["counter/doubleCount"]}}
+
+module修改根组件：
+changeNameAction({commit,dispatch,state,rootState,getters,rootGetters}){
+    commit("changeName","kobe");
+    commit("changeRootName",null,{root:true});
+    dispatch("changeRootNameAction",
+    null,{root:true})
+}
+
+
+### Pinia状态管理
+
+#### Pinia和VueX对比
+
+那么我们不是已经有Vuex了吗?为什么还要用Pinia呢?
+口 Pinia 最初是为了探索 Vuex 的下一次迭代会是什么样子，结合了 Vuex 5 核心团队讨论中的许多想法
+口 最终，团队意识到Pinia已经实现了Vuex5中大部分内容，所以最终决定用Pinia来替代Vuex;口与Vuex 相比，Pinia 提供了一个更简单的 API，具有更少的仪式，提供了 Composition-API 风格的API;口 最重要的是，在与 Typescript 一起使用时具有可靠的类型推断支持
+
+和Vuex相比，Pinia有很多的优势:
+口比如mutations不再存在
+√他们经常被认为是非常冗长
+他们最初带来了devtools 集成，但这不再是问题:口 更友好的TypeScript支持，Vuex之前对TS的支持很不友好;
+口 不再有modules的嵌套结构:
+你可以灵活使用每一个store，它们是通过扁平化的方式来相互使用的
+口 也不再有命名空间的概念，不需要记住它们的复杂关系;
+
+index.js入口文件
+```js
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
+
+export default pinia 
+
+```
+
+在main.js 中use(pinia)
+
+counter.js
+```js
+//定义关于counter的store
+import { defineStore } from 'pinia'
+
+//第一个参数为id，第二个为对象，是要存的东西
+const useCounter = defineStore("counter",{
+    state()=>({
+        count:99
+    })
+})
+
+// const countStore = useCounter()
+
+export default useCounter
+
+```
+
+Home.vue
+```js
+<template>
+    <div class="home">
+        <h2>Home View</h2>
+        <h2> 
+            count:{{counterStore.count}}
+        </h2>
+    </div>
+</template>    
+<script setup>
+import useCounter from '@/stores/counter';
+
+const counterStore = useCounter()
+
+</script>    
+
+
+```
+#### 什么是Store?
+口一个store (如 Pinia)是一个实体，它会持有为绑定到你组件树的状态和业务逻辑，也就是保存了全局的状态口 口它有点像始终存在，并且每个人都可以读取和写入的组件;
+口 你可以在你的应用程序中定义任意数量的store来管理你的状态
+store有三个核心概念:
+口state、getters、actions ;
+等同于组件的data、computed、methods;
+口一旦 store 被实例化，你就可以直接在 store 上访问 state、getters 和 actions 中定义的任何属性.
+
+
+pinia组件内 拿到store里面的数据，直接进行修改
+``{storeToRefs}``将数据变为响应式
+注意Store获取到后不能被解构，那么会失去响应式:
+口为了从 Store 中提取属性同时保持其响应式，您需要使用``storeToRefs``
+
+
+通过
+```userStore.$patch({})```传入对象，可以进行一次性修改
+多个状态
+``$state ``替换state为新的对象
+
+
+### Getters
+
+相当于computed 假如一些数据需要转化后使用的话，就是用getters
+
+一个getter引入另外一个getter
+
+this是store实例
+
+也支持返回一个函数
+
+getter中如果用到别的store中的数据
+直接import引入对应的use函数然后使用就可以
+
+#### actions   
+用来定义方法
+和getters一样，在action中可以通过this访问整个store实例的所有操作
+
