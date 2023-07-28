@@ -1,4 +1,4 @@
-# LearnVue
-这是我学习Vue3的笔记记录
+# Learn
+这是我学习前端的笔记记录
 
 加油加油gogogo

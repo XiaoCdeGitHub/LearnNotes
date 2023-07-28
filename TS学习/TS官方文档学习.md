@@ -123,7 +123,7 @@ function error(message: string): never {
 function fail() {
     return error("Something failed");
 }
-
+```
 //Object 
 非原始类型，除了number，string，boolean，bigint，symbol，null或者undefined之外的类型
 
@@ -139,8 +139,8 @@ Object 类型的变量不能进行类型断言，因为它是一个顶级类型�
 
 下面是一个使用 Object 类型的示例：
 
-typescript
-Copy
+```typescript
+
 // 定义一个 Object 类型的变量
 let obj: Object;
 
@@ -159,8 +159,9 @@ console.log(obj.toString());
 
 // 不能进行类型断言
 // console.log((obj as string).toUpperCase());
-需要注意的是，虽然 Object 类型可以接受任何对象类型的值，但是在实际开发中，我们应该尽量使用更具体的对象类型，以提高代码的可读性和类型安全性。
 ```
+需要注意的是，虽然 Object 类型可以接受任何对象类型的值，但是在实际开发中，我们应该尽量使用更具体的对象类型，以提高代码的可读性和类型安全性。
+
 
 ##  类型断言  
 
@@ -710,7 +711,6 @@ let hiWorld = "Hi World";
 
 ### 字符串字面量类型
 字面量类型可以通过联合联系、类型守卫、类型别名来结合实际字符串值。通过这些特性，我们可以获取一种字符串并使其有类似枚举（enum）的行为。
-字面量类型可以通过联合联系、类型守卫、类型别名来结合实际字符串值。通过这些特性，我们可以获取一种字符串并使其有类似枚举（enum）的行为。
 ```ts
 type Easing = "ease-in" | "ease-out" | "ease-in-out";
 
@@ -743,12 +743,13 @@ function createElement(tagName: "input"): HTMLInputElement;
 function createElement(tagName: string): Element {
   // ... code goes here ...
 }
-
+```
 
 ### 数字字面量类型
 
 TypeScript 还有数字字面量类型，它的行为和上述字符串字面量类型相同。
-``` ts
+
+```ts
 function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
   return (Math.floor(Math.random() * 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
 }
