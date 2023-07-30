@@ -124,7 +124,7 @@ function fail() {
     return error("Something failed");
 }
 ```
-//Object 
+## Object 
 非原始类型，除了number，string，boolean，bigint，symbol，null或者undefined之外的类型
 
 在 TypeScript 中，Object 是一个表示所有对象类型的顶级类型。也就是说，所有的对象类型都可以看作是 Object 类型的子类型。

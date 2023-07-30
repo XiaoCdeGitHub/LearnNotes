@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ljy是猪&#10084;&#65039;</title>
+    <!-- <embed src="https://music.163.com/song?id=1354504985&userid=412512585" autostart="true" loop="true"
+        hidden="true"></embed> -->
+    <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/mouse_slide.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/zyoushuo/Blog/hexo/js/clicklove.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background: #000;
+        }
+
+        canvas {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+       
+        .namebox {
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .namebox h1 {
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <style type="text/css" >
+        .bear {
+            width: 100px;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            
+        }
+        .loveBook{
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: none;
+        }
+    </style>
+    <canvas id="pinkboard"></canvas>
+    <script>
+        var settings = {
+            particles: {
+                length: 500, // maximum amount of particles
+                duration: 2, // particle duration in sec
+                velocity: 100, // particle velocity in pixels/sec
+                effect: -0.75, // play with this for a nice effect
+                size: 30, // particle size in pixels
+            },
+        };
+        (
+            function () {
+                var b = 0;
+                var c = ["ms", "moz", "webkit", "o"];
+                for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
+                    window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"];
+                    window.cancelAnimationFrame = window[c[a] + "CancelAnimationFrame"] || window[c[a] + "CancelRequestAnimationFrame"]
+                }
+                if (!window.requestAnimationFrame) {
+                    window.requestAnimationFrame = function (h, e) {
+                        var d = new Date().getTime();
+                        var f = Math.max(0, 16 - (d - b));
+                        var g = window.setTimeout(function () { h(d + f) }, f); b = d + f; return g
+                    }
+                } if (!window.cancelAnimationFrame) { window.cancelAnimationFrame = function (d) { clearTimeout(d) } }
+            }());
+        var Point = (function () {
+            function Point(x, y) {
+                this.x = (typeof x !== 'undefined') ? x : 0;
+                this.y = (typeof y !== 'undefined') ? y : 0;
+            }
+            Point.prototype.clone = function () {
+                return new Point(this.x, this.y);
+            };
+            Point.prototype.length = function (length) {
+                if (typeof length == 'undefined')
+                    return Math.sqrt(this.x * this.x + this.y * this.y);
+                this.normalize();
+                this.x *= length;
+                this.y *= length;
+                return this;
+            };
+
+            Point.prototype.normalize = function () {
+                var length = this.length();
+                this.x /= length;
+                this.y /= length;
+                return this;
+            };
+            return Point;
+        })();
+
+        var Particle = (function () {
+            function Particle() {
+                this.position = new Point();
+                this.velocity = new Point();
+                this.acceleration = new Point();
+                this.age = 0;
+            }
+            Particle.prototype.initialize = function (x, y, dx, dy) {
+                this.position.x = x;
+                this.position.y = y;
+                this.velocity.x = dx;
+                this.velocity.y = dy;
+                this.acceleration.x = dx * settings.particles.effect;
+                this.acceleration.y = dy * settings.particles.effect;
+                this.age = 0;
+            };
+            Particle.prototype.update = function (deltaTime) {
+                this.position.x += this.velocity.x * deltaTime;
+                this.position.y += this.velocity.y * deltaTime;
+                this.velocity.x += this.acceleration.x * deltaTime;
+                this.velocity.y += this.acceleration.y * deltaTime;
+                this.age += deltaTime;
+            };
+
+            Particle.prototype.draw = function (context, image) {
+                function ease(t) {
+                    return (--t) * t * t + 1;
+                }
+                var size = image.width * ease(this.age / settings.particles.duration);
+                context.globalAlpha = 1 - this.age / settings.particles.duration;
+                context.drawImage(image, this.position.x - size / 2, this.position.y - size / 2, size, size);
+            };
+            return Particle;
+        })();
+        /*
+      
+        * ParticlePool class
+      
+        */
+        var ParticlePool = (function () {
+            var particles,
+                firstActive = 0,
+                firstFree = 0,
+                duration = settings.particles.duration;
+            function ParticlePool(length) {
+                // create and populate particle pool
+                particles = new Array(length);
+                for (var i = 0; i < particles.length; i++)
+                    particles[i] = new Particle();
+            }
+            ParticlePool.prototype.add = function (x, y, dx, dy) {
+                particles[firstFree].initialize(x, y, dx, dy);
+                // handle circular queue
+                firstFree++;
+                if (firstFree == particles.length) firstFree = 0;
+                if (firstActive == firstFree) firstActive++;
+                if (firstActive == particles.length) firstActive = 0;
+            };
+            ParticlePool.prototype.update = function (deltaTime) {
+                var i;
+                // update active particles
+                if (firstActive < firstFree) {
+                    for (i = firstActive; i < firstFree; i++)
+                        particles[i].update(deltaTime);
+                }
+                if (firstFree < firstActive) {
+                    for (i = firstActive; i < particles.length; i++)
+                        particles[i].update(deltaTime);
+                    for (i = 0; i < firstFree; i++)
+                        particles[i].update(deltaTime);
+                }
+                // remove inactive particles
+                while (particles[firstActive].age >= duration && firstActive != firstFree) {
+                    firstActive++;
+                    if (firstActive == particles.length) firstActive = 0;
+                }
+            };
+            ParticlePool.prototype.draw = function (context, image) {
+                // draw active particles
+                if (firstActive < firstFree) {
+                    for (i = firstActive; i < firstFree; i++)
+                        particles[i].draw(context, image);
+                }
+                if (firstFree < firstActive) {
+                    for (i = firstActive; i < particles.length; i++)
+                        particles[i].draw(context, image);
+                    for (i = 0; i < firstFree; i++)
+                        particles[i].draw(context, image);
+                }
+            };
+            return ParticlePool;
+        })();
+        /*
+      
+        * Putting it all together
+      
+        */
+        (function (canvas) {
+            var context = canvas.getContext('2d'),
+                particles = new ParticlePool(settings.particles.length),
+                particleRate = settings.particles.length / settings.particles.duration, // particles/sec
+                time;
+            // get point on heart with -PI <= t <= PI
+            function pointOnHeart(t) {
+                return new Point(
+                    160 * Math.pow(Math.sin(t), 3),
+                    130 * Math.cos(t) - 50 * Math.cos(2 * t) - 20 * Math.cos(3 * t) - 10 * Math.cos(4 * t) + 25
+                );
+
+            }
+
+            // creating the particle image using a dummy canvas
+
+            var image = (function () {
+                var canvas = document.createElement('canvas'),
+                    context = canvas.getContext('2d');
+                canvas.width = settings.particles.size;
+                canvas.height = settings.particles.size;
+                // helper function to create the path
+                function to(t) {
+                    var point = pointOnHeart(t);
+                    point.x = settings.particles.size / 2 + point.x * settings.particles.size / 350;
+                    point.y = settings.particles.size / 2 - point.y * settings.particles.size / 350;
+                    return point;
+                }
+                // create the path
+                context.beginPath();
+                var t = -Math.PI;
+                var point = to(t);
+                context.moveTo(point.x, point.y);
+                while (t < Math.PI) {
+                    t += 0.01; // baby steps!
+                    point = to(t);
+                    context.lineTo(point.x, point.y);
+                }
+                context.closePath();
+                // create the fill
+                context.fillStyle = '#ff30c5';
+                // context.fillStyle = '#ea80b0';
+                context.fill();
+                // create the image
+                var image = new Image();
+                image.src = canvas.toDataURL();
+                return image;
+            })();
+            // render that thing!
+            function render() {
+                // next animation frame
+                requestAnimationFrame(render);
+                // update time
+                var newTime = new Date().getTime() / 1000,
+                    deltaTime = newTime - (time || newTime);
+                time = newTime;
+                // clear canvas
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                // create new particles
+                var amount = particleRate * deltaTime;
+                for (var i = 0; i < amount; i++) {
+                    var pos = pointOnHeart(Math.PI - 2 * Math.PI * Math.random());
+                    var dir = pos.clone().length(settings.particles.velocity);
+                    particles.add(canvas.width / 2 + pos.x, canvas.height / 2 - pos.y, dir.x, -dir.y);
+                }
+                // update and draw particles
+                particles.update(deltaTime);
+                particles.draw(context, image);
+            }
+            // handle (re-)sizing of the canvas
+            function onResize() {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+            }
+            window.onresize = onResize;
+            // delay rendering bootstrap
+            setTimeout(function () {
+                onResize();
+                render();
+            }, 10);
+        })(document.getElementById('pinkboard'));
+    </script>
+    <div class="namebox">
+        <!-- <audio autoplay="" loop=""> <source src="https://cd-mapbed.oss-cn-beijing.aliyuncs.com/%E6%B1%9F%E8%BE%B0%20-%20%E6%97%A0%E6%84%9F.mp3"></audio> -->
+        <!-- <video  controls="" autoplay="true" name="media"> <source src="https://cd-mapbed.oss-cn-beijing.aliyuncs.com/%E6%B1%9F%E8%BE%B0%20-%20%E6%97%A0%E6%84%9F.mp3" type="audio/mpeg"></video> -->
+        <video controls="true" autoplay="true" name="media" loop="true" hidden="true">
+            <source src="https://cd-mapbed.oss-cn-beijing.aliyuncs.com/%E6%B1%9F%E8%BE%B0%20-%20%E6%97%A0%E6%84%9F.mp3"
+                type="audio/mpeg">
+        </video>
+        <h1>CD&#10084;&#65039;LJY</h1>
+        <!-- 点击草莓熊进行页面转换 -->
+        <div class="bear" id="bear">
+            <img style="width:100px; height:100px"
+                src="https://cd-mapbed.oss-cn-beijing.aliyuncs.com/QQ%E5%9B%BE%E7%89%8720221030103023.jpg" alt="" />
+        </div>
+    </div>
+  <div>
+    <div id="markdown" style="display:none">
+# 爱情保卫书
+## 写在最前面
+
+因为我和老婆总是各种各样的原因吵架，所以我觉得我们很有必要为彼此的相处制定一些规则，让我们的爱情更稳定，相处更轻松。
+
+这个爱情保卫书，一旦制定，就需要两个人一起严格执行，不然后果会真的很严重！！！
+
+##### 重要：**在制定这份保卫书后，我们双方需要一起认真修改，在修改讨论过程中！不准吵架！！！**
+
+笔者言：中学历史讲过，美国之所以那么强盛，就是因为当年在宪法制定时，制度极其优越和严谨，设计很巧妙，所以为美国的发展打下了坚实的基础。我们也要让这个保卫书尽量做到科学严谨，双方都满意！
+
+
+
+## 正文
+
+### 态度篇
+
+首先明确，我们都很爱彼此，这一点毋庸置疑，不然我们不会吵那么多架谁都离不开谁，但是在情绪上头的时候我们往往会忽略这一点，从而做出一些伤害彼此的行为。
+
+我们在彼此有情绪以后，做到完全压抑自己的情绪去心平气和跟对方讲，以你我的性格，这绝对不可能，哪怕能做到，也只是我们在委屈自己，不会长久，所以我们不需要那样，而是需要以正确的形式发泄，以爱的形式去发泄，发泄也要建立在爱的前提上：
+
+eg.臭傻逼 老娘是真的不开心了 你刚说的那句话....你刚做的那件事..... 让我非常不爽我现在非常不开心....
+
+  eg. 老婆你刚才那么说话我真的很不开心，我现在真的很难过。
+
+也许看着这么说挺幼稚，但我觉得...胜过我们以前不开心时的所有做法。不理对方？强迫对方？逼着对方？情绪上头然后说伤害彼此的话，做伤害彼此的事？我们其实首先只要说出来，就代表着，我需要。 我需要你哄，我需要你冷静，我需要你的爱，我需要你。 而不是两个人都冷处理，错误表达，引起更大的连锁反应。我们能做到这一步，很多问题其实就没那么难处理。
+
+情绪上头的时候谁都有不想说话的时候，那我们可以有彼此的宽松时间吗？当然可以，但是自由也是建立在规定的前提下的，我们可以按照生气程度以及对方的后续表现，选择冷静的期限，这个不一定要说出来，但我们要有个大概，比如笨蛋脆脆鲨惹了漂亮小怡，漂亮小怡说了不开心不开心笨蛋还是让你更不开心，在很无力不想说话的情况下，我们可以适当给彼此一些时间，比如一个小时或者两个小时（根据具体情况而定）然后再次去尝试处理。
+
+## 删除篇
+
+删除在笔者以前看来，一直觉得是一种很严肃的事情，就是我这一辈子，恨透了这个人，这个人背叛了我，出卖了我，非常严重的事情，才可以去做，代表着我无论如何绝对不会在联系ta，此生绝对不会有任何一点瓜葛，我再也不需要ta。
+
+所以我们不应该在有情绪的时候，以删除为情绪的宣泄口，这个实践证明时间长了真的会伤害我们敏感脆弱的小感情！我们谁都不可以这样做。真的是陋习！我们一定要改！
+
+## 理解篇
+
+很多时候吵架，我们都没有做到换位思考，没有说真的把自己放到对方的性别里，对方的角色里，对方的情景里去考虑，可以大概分为这三部分，以后在吵架后，一定要都把彼此放到这三个位置里去思考，当然，这只是为了维护我们的感情，减少吵架带来的伤害，而不是以这三个角度为借口和挡箭牌去粉饰自己！
+
+
+
+## 尊重篇
+
+一段好的感情里，相互尊重是非常重要的，很多时候我们就是没有做到相互尊重从而吵得架，我们应该尊重对方的想法，这一点非常重要，我们对对方有占有欲和自私心是非常正常的，但假如对方说出了自己的想法，我们就应该先把自己的理由放在第二位，先去聆听和思考对方的想法，这就是尊重，这个时间里就需要我们做到理解篇里的内容。
+
+假如自己没有感觉到被尊重，我们就要直接提出，表达自己的感受：
+
+eg.你刚才xxx我没有感受到你对我的尊重，所以我很不开心，我希望你现在...
+
+
+
+## 伤害篇
+
+俗话说，人讲的话就像刀刃，说出去的话，泼出去的水，我们都是成年人，都是深爱彼此的人，我们都离不开彼此，那么就不应该把刀捅向彼此的内心，永远永远不去故意揭对方的伤疤，吵架了永远永远针对事情，针对这个事情里的你，而不是我心里的你。不可以说伤害彼此的话，做伤害彼此的事。
+
+
+
+## 程度篇
+
+我们无论发生什么天大的事情，除非生老病死，和背叛，严重的欺瞒和故意伤害，都不应该去说分手，这也会很大程度伤对方的心，也许对方的手里还捏着明天要准备给你的鲜花。我们应该做的是冷静下来去解决，冷静的方式有很多，我们肯定不介意一起去以快乐的方式，冷静，开心解决了情绪，剩下的不开心就交给理智。
+
+假如笨蛋脆脆鲨在小怡美女脸上放了个臭屁，那么你可以打他的屁股一下，而不应该拉黑删除。
+
+假如笨蛋脆脆鲨背着你偷偷请学妹喝奶茶，目的是为了撩妹，获取别的女生芳心，拉黑半个月都不带多。
+
+假如笨蛋脆脆鲨因为自己的某个原因，无心让你很难过，很伤心，还没有哄你，那么你可以小小的讨厌他一下，等他哄。
+
+
+
+## 安全感篇
+
+很重要的一点，我们假如真的因为对方做的某件事情，很没有很没有安全感，我们直接说出来
+
+eg.老婆你刚刚xxx我真的很没安全感
+
+eg.老公你去和xxx干嘛干嘛我会多想
+
+当对方明确说出来后，自己没有放在最高级别的队列里去处理，而是嫌麻烦，冷处理，建议直接到伤害篇（假）。
+        
+
+        
+        
+        
+          </div>
+          <div id="html" class="loveBook"></div>
+  </div>
+   
+  <script>
+    let bear = document.getElementsByClassName('bear')[0];
+    bear.addEventListener('click', (e) => {
+        // e.preventDefault();
+         // alert('刘嘉怡是猪猪');
+        // const markdownUrl = './爱情保卫书.md';
+        // const windowSpecs = 'width=300,height=600,menubar=no,toolbar=no,location=no,resizable=yes,scrollbars=no';
+        // const mdWindow = window.open('', '爱情保卫书', windowSpecs);
+        let converter = new showdown.Converter();
+        let markdownText = document.getElementById('markdown').innerHTML;
+        let html = converter.makeHtml(markdownText);
+        document.getElementById('html').innerHTML = html;
+        let styleL = document.getElementById('html')
+        console.log(styleL.display);
+        document.getElementById('html').style.display = 'block';
+        // if(styleL.display == null||styleL.display ==undefined||styleL.display ==="none"){
+        //     styleL.display = 'block'
+        //     HTMLElement.clientHeight; // 强制重新渲染
+        //     console.log(1);
+        // }else{
+        //     styleL.display = 'none'
+        // }
+    
+    })
+    
+</script>
+</body>
+
+
+
+
+
+</html>
