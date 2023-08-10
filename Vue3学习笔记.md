@@ -1128,7 +1128,8 @@ const counterStore = useCounter()
 
 ```
 #### 什么是Store?
-口一个store (如 Pinia)是一个实体，它会持有为绑定到你组件树的状态和业务逻辑，也就是保存了全局的状态口 口它有点像始终存在，并且每个人都可以读取和写入的组件;
+口一个store (如 Pinia)是一个实体，它会持有为绑定到你组件树的状态和业务逻辑，也就是保存了全局的状态口
+口它有点像始终存在，并且每个人都可以读取和写入的组件;
 口 你可以在你的应用程序中定义任意数量的store来管理你的状态
 store有三个核心概念:
 口state、getters、actions ;
@@ -1164,4 +1165,87 @@ getter中如果用到别的store中的数据
 #### actions   
 用来定义方法
 和getters一样，在action中可以通过this访问整个store实例的所有操作
+
+
+
+### Pinia持久化存储
+
+pinia可以将 store 中的数据保存在本地存储中，以便在页面刷新后仍然可以访问
+piniaPluginPersistedstate插件实现
+
+安装 pinia-plugin-persistedstate 插件
+
+bash复制代码npm i pinia-plugin-persistedstate
+#或者使用 npm
+yarn add pinia-plugin-persistedstate
+
+
+安装完成后 需要在main.ts/js文件内进行配置
+
+```js
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+++ import piniaPluginPersistedstate  from 'pinia-plugin-persistedstate'
+
+import App from './App.vue'
+import router from './router'
+
+import './assets/main.css'
+
+const app = createApp(App)
+const pinia = createPinia()
+++ pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+app.use(router)
+
+app.mount('#app')
+
+```
+
+引入了piniaPluginPersistedstate   并且使用app.use()传递给了应用程序。
+3.最后再store里面添加配置选项
+```js
+import { ref, computed } from "vue";
+import { defineStore } from "pinia";
+
+
+// 选项式写法
+// export const useCounterStore = defineStore(
+//   "counter",
+
+//   {
+//     state: () => ({ count: 0 }),
+//     // state: () => {
+//     //   return { count: 0 }
+//     // },
+//     // 也可以这样定义
+//     // state: () => ({ count: 0 })
+++//     persist: true,
+//     actions: {
+//       increment() {
+//         this.count++;
+//       },
+//     },
+//   }
+// );
+
+// 组合式写法 
+export const useCounterStore = defineStore(
+  "counter",
+  () => {
+    const count = ref(0);
+    const increment =()=> {
+      count.value++;
+    }
+    return {
+      count,
+      increment
+    };
+  },
+  {
+++    persist: true,
+  },
+
+);
+``
 
