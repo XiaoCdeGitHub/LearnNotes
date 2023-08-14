@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello React</title>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- 添加依赖 -->
+    <!-- 依赖三个库 -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        //渲染hello world 18以前写法
+    // ReactDOM.render(<h2>Hello World</h2>,document.querySelector("#root"))
+     const root =  ReactDOM.createRoot(document.querySelector("#root"))
+     root.render(<h2>Hello World</h2>)
+        
+    </script>
+</body>
+</html>
