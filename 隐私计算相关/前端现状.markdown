@@ -1,0 +1,78 @@
+### 技术栈
+
+* vue3
+* typescript
+* pinia
+* vite
+* vitest （单元测试）
+* cypress（集成化测试）
+* pnpm
+* monorepo
+* 区块链（web3.js）
+
+### 项目类型
+
+#### SSG
+
+[yeez-website](https://e.gitee.com/YeeZTech/projects/118311/repos/YeeZTech/yeez-website/sources)
+
+> 此项目是当前的管网，采用SSG实现。
+
+#### SSR
+
+[yeeztech-webapp](https://e.gitee.com/YeeZTech/projects/118311/repos/YeeZTech/yeeztech-webapp/sources)
+
+> 此项目是老的官网，采用nuxt.js，实现的ssr。
+
+#### 桌面应用
+
+[data-tool-electron](https://e.gitee.com/YeeZTech/projects/202311/repos/YeeZTech/data-tool-electron/sources)
+
+> 此项目是典枢的客户端，上传文件、本地解析文件、加密文件等主要功能，采用，electronjs、vue3、webpack等技术。适用windows、mac、linux。
+
+#### 区块链
+
+[dss-ms-monorepo](https://e.gitee.com/YeeZTech/projects/462005/repos/YeeZTech/dss-ms-monorepo/sources)
+
+> keythereum此项目是大连商品交易所质押管理系统，采用，web3.js、`bn.js`、buffer、`crypto`、`ec-altbn128`等库，实现了，解密获取区块链账号、非对称加密等功能。
+
+> [核心代码depositunit](https://e.gitee.com/YeeZTech/projects/462005/repos/YeeZTech/dss-ms-monorepo/tree/master/ctc-ms-api/depositunit)
+
+#### SPA
+
+[dss-web](https://e.gitee.com/YeeZTech/projects/462005/repos/YeeZTech/dss-web/sources)
+
+> 此项目是探索vue3生态，以及最大众的技术栈（vue3、ts、vite、vitest、pinia、pnpm）集合，除了monorepo
+
+> * 使用monorepo管理包
+> * 无需显式声明vue、vue-router、antdv的api。
+> * vitest（单元测试）
+> * cypress（集成测试-e2e）
+
+### 如何提高前端目前的信任度
+
+现状。前端目前质量比较差。
+
+#### 前期
+
+* 整理需求，并理解需求，最后再排期（很重要）。
+* 排期的细节一定要形成文档。
+* 开发时，达到完成一个模块的标准是以下内容：
+  * UI还原度高
+  * 按api文档完成逻辑与交互
+  * 按prd完成所有功能
+  * 只剩调通真实的api即可
+* 编写api的单元测试，提高联调效率，并记录问题。
+* 相同的逻辑要复用，坚决不能复制。
+* 增加check模块功能的环节。
+* 有风险及时沟通。
+
+#### 后期
+
+* 测试阶段，修改bug时，一定要想清楚！整理好影响范围，再动手，改完后，一定要测试！（很重要）
+
+#### 其他
+
+* PM要一切的时间（排期），内部商量后，再提供，避免，考虑不全，降低信任度。
+* 与其他人沟通时，想清楚沟通的**我想要什么结果、我如何清晰明确的表达问题。**
+* 避免暴力沟通。
