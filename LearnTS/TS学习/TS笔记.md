@@ -157,4 +157,63 @@ const info = {
 口如果我们想描述一个带有属性的函数，我们可以在一个对象类型中写一个调用签名 (call signature)
 
 
+构造签名
 
+参数的可选类型
+```ts
+//3.ts中函数的重载写法
+//3.1先编写重载签名
+function add(num1: number, num2: number): number
+function add(str1: string,str2:string):string
+
+//3.2编写通用函数实现
+function add(arg1: any, arg2: any) { 
+    return arg1 + arg2;
+}
+add(10, 10)
+add("abc", "def")
+// add({ aaa: "aaa" }, 123)//err:没有与此调用匹配的重载
+
+```
+有实现体的函数是不能直接被调用的
+
+可以使用联合类型的情况，尽量使用联合类型
+
+ts中this默认是any
+
+在开启nolmplicitThis的情况下，我们必须指定this的类型
+如何指定呢?函数的第一个参数类型:
+口函数的第一个参数我们可以根据该函数之后被调用的情况，用于声明this的类型(名词必须叫this)
+口在后续调用函数传入参数时，从第二个参数开始传递的，this参数会在编译后被抹除
+
+this相关的内置工具
+//1.ThisParameterType:获取FooType类型中的this类型
+//2.OmitOmitThisParameter:删除this参数类型，剩余的函数类型
+//3.ThisType用于绑定一个上下文的this
+
+
+TS面向对象
+
+
+我们来定义一个Person类:
+口使用class关键字来定义一个类
+我们可以声明类的属性:在类的内部声明类的属性以及对应的类型
+口如果类型没有声明，那么它们默认是any的;
+口 我们也可以给属性设置初始化值;
+口在默认的strictPropertylnitialization模式下面我们的属性是必须
+初始化的，如果没有初始化，那么编译时就会报错;
+√如果我们在strictPropertylnitialization模式下确实不希望给属性初始化，可以使用name!: string语法
+
+
+类的继承
+面向对象的其中一大特性就是继承，继承不仅仅可以减少我们的代码量，也是多态的使用前提
+我们使用extends关键字来实现继承，子类中使用super来访问父类
+我们来看一下Student类继承自Person:
+口Student类可以有自己的属性和方法，并且会继承Person的属性和方法
+口在构造函数中，我们可以通过super来调用父类的构造方法，对父类中的属性进行初始化;
+
+类的成员修饰符
+在TypeScript中，类的属性和方法支持三种修饰符: public、private、protected
+口 public 修饰的是在任何地方可见、公有的属性或方法，默认编写的属性就是public的;
+口 private 修饰的是仅在同一类中可见、私有的属性或方法
+口 protected 修饰的是仅在类自身及子类中可见、受保护的属性或方法
