@@ -18,7 +18,7 @@ var Greeting = /** @class */ (function () {
     Greeting = __decorate([
         Greeter("Hello TS!")
     ], Greeting);
-    return Greeting;
+    return Greeting; 
 }());
 var myGreeting = new Greeting();
 myGreeting.greet(); // console output: 'Hello TS!';

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <ul>
+        
+    </ul>
+
+    <script>
+
+        const domStr = `
+            <li class="item">
+                <div class="left-wraper">
+                    <div class="icon">
+                        <img src="./1.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <b>草莓熊熊</b>
+                    </div>
+                </div>
+                <button>下载</button>
+            </li>
+        `
+
+        let domeList = ''
+        for (let i = 0; i < 200; i++) {
+            domeList+=domStr
+        }
+
+        // 动态加入li
+        const ul = document.querySelector('ul')
+        ul.innerHTML = domeList
+
+
+        const items = document.querySelectorAll('.item')
+
+
+        const ulH = ul.offsetHeight
+        const itemH = items[0].offsetHeight + 15 // 单个高度+margin
+        const vieNum = Math.ceil(ulH / itemH) // 视图内最多可以看见几个
+
+        // 节点更改类名
+        function checkInnerView(index){
+            for (let i = 0; i < items.length; i++) {
+                const element = items[i];
+
+                if(i >= index && i <= (index+vieNum)){
+                    element.classList.add('active')
+                }else {
+                    element.classList.remove('active')
+                }
+                
+            }
+        }
+
+        checkInnerView(0)
+
+        ul.addEventListener('scroll', function(){
+            // 算出当前滚动到的位置应该 哪个节点在最顶端
+            const index = Math.floor(this.scrollTop / itemH)
+
+            checkInnerView(index)
+        })
+
+
+
+    </script>
+</body>
+</html>

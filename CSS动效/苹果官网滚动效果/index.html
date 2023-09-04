@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苹果网站效果</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <video src="./video.webm"></video>
+
+        <div class="txt-item">
+            撒旦飒飒大<span>苏打实打</span> 实大苏打实打实的反对德里克十分激烈对抗放进了口袋精神分裂的
+        </div>
+        <div class="txt-item">
+            <div class="line"></div>
+            <div class="txt">
+                的时间反抗<span>类毒素解</span>放路口的就是浪费空间独立思考解放立刻搭街坊立刻决定离开房间地方大师傅大幅度随风倒十分
+            </div>
+        </div>
+        <div class="txt-item">
+            <div class="line"></div>
+            的房间里<span>电视机分</span>厘卡的就是浪费空间领导的洛杉矶发了大家分厘卡九点十六分雕刻技法角度来说
+        </div>
+        <div class="txt-item">
+            肯定就浪费了<span>扩大解释法</span>律框架的绿色开放的链接发来看的房间里的就是浪费的房间里的开发建设
+        </div>
+    </div>
+
+    <script>
+        // 原理，一个视频，根据滚动距离与整个body高度的比值 设置 对应视频的当前播放位置
+        const videoEl = document.querySelector('video')
+
+        const txtItems = document.querySelectorAll('.txt-item')
+
+        let duration = 0 // 视频总时长
+
+
+        videoEl.load() // 刚开始就让视频重新加载一下，有些时候会因为没加载导致下面的事件没触发
+
+        videoEl.addEventListener('durationchange', function(e){
+            duration = videoEl.duration
+        })
+
+
+        function showTxt(percent){
+
+            txtItems.forEach(dom => {
+                dom.className = 'txt-item'
+            })
+
+            // 当时常到百分之几时，对应的文字出现，这个随便调
+            if(percent > 5 && percent <= 33){
+                txtItems[0].className = 'txt-item active'
+            }else if(percent > 45 && percent <= 58){
+                txtItems[1].className = 'txt-item active'
+            }else if(percent > 69 && percent <= 85){
+                txtItems[2].className = 'txt-item active'
+            }else if(percent > 90){
+                txtItems[3].className = 'txt-item active'
+            }
+
+        }
+
+
+        function updateCurrentTime(){
+
+            // 滚动的距离占总高度的多少，那当前时间就是总时长的多少 比如滚动的距离占body的50%那么，当前的时间就应该是总时长的50%
+            const percent = Math.ceil(window.scrollY) / (document.body.offsetHeight - window.innerHeight)
+
+            videoEl.currentTime = duration * percent
+
+
+            showTxt(percent*100)
+        }
+
+        document.addEventListener('scroll', updateCurrentTime)
+
+
+    </script>
+
+</body>
+</html>

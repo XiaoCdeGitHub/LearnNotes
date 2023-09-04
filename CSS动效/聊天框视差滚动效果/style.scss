@@ -1,0 +1,103 @@
+body {
+	height: 100vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: #333;
+}
+
+.scroller {
+	width: 100%;
+	height: 1000vh;
+	overflow-x: hidden;
+	position: relative;
+	overflow-y: auto;
+}
+
+main {
+	top: 0;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	transform-style: preserve-3d;
+	perspective: 15rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2.4rem;
+	
+	@media only screen and (max-width: 600px) {
+		font-size: 1.6rem;
+	}
+}
+
+.chat {
+	padding: 1rem;
+	transform-style: preserve-3d;
+	transform-origin: bottom center;
+	transform: translateY(calc(-50% + 10rem)) translateZ(calc(100vh * var(--phase, 0))) rotateX(90deg);
+	// background-color: #333;sa
+	height: 100%;
+	display: flex;
+	flex-direction: column-reverse;
+	max-width: 80rem;
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	
+	
+	.dialog {
+		height: 100%;
+		transform: rotateX(-90deg);
+		transform-origin: center bottom;
+		flex: 1;
+		opacity: calc(1 - var(--focal));
+		display: flex;
+		align-items: flex-end;
+		position: relative;
+		width: 100%;
+		
+		figure {
+			display: flex;
+			align-items: flex-end;
+			position: absolute;
+			width: 100%;
+			
+			img {
+				width: 5rem;
+				height: 5rem;
+				border-radius: 5rem;
+				margin-inline-end: 1rem;
+				border: solid 1px rgba(0, 0, 0, 0.3);
+			}
+
+			p {
+				background-color: lightsteelblue;
+				padding: 2rem;
+				@media only screen and (max-width: 600px) {
+					padding: 1rem;
+				}
+				border-radius: .5rem;
+				max-width: 60%;
+				border: solid 1px rgba(0, 0, 0, 0.3);
+				color: rgba(0, 0, 0, 0.7);
+			}
+		}
+		
+		&.me {
+			justify-content: flex-end;
+			
+			img {
+				margin-inline-end: 0;
+				margin-inline-start: 1rem;
+			}
+			
+			figure {
+				flex-direction: row-reverse;
+				
+				p {
+					background-color: palegoldenrod;
+				}
+			}
+		}
+	}
+}

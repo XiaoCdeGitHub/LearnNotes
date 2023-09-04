@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div></div>
+    <div class="white"></div>
+    <!-- <div class="black"></div> -->
+   
+</body>
+<style lang="scss">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background: #000;
+    }
+
+    :root {
+        --bgUrl: url(https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg3.doubanio.com%2Fview%2Fgroup_topic%2Fraw%2Fpublic%2Fp106878681.jpg&refer=http%3A%2F%2Fimg3.doubanio.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1671271180&t=13308088bbee45f06884269b6fea239b);
+    }
+
+    div {
+        position: relative;
+        margin: auto;
+        width: 400px;
+        height: 500px;
+        flex-shrink: 0;
+        background: url(https://s1.ax1x.com/2022/12/16/z75z7T.jpg);
+        background-size: cover;
+        background-position: 0 -150px;
+        background-repeat: no-repeat;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 240px;
+            left: 160px;
+            width: 70px;
+            height: 90px;
+            background: var(--bgUrl);
+            background-size: cover;
+            background-position: -30px 0;
+            mix-blend-mode: multiply;
+            filter: contrast(3);
+        }
+    }
+
+
+    .white {
+        &::before {
+            mix-blend-mode: color-dodge;
+            filter: invert(1) contrast(3);
+        }
+    }
+
+    .black {
+        &::before {
+            background: var(--bgUrl), #000;
+            background-size: cover;
+            background-position: -70px 0;
+            mix-blend-mode: multiply;
+            filter: contrast(3);
+        }
+    }
+</style>
+</html>

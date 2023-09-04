@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //1.打印调试信息
+        console.debug('Gods bless me!');
+        //2.打印信息
+        //2.1普通信息
+        console.log('hello console');
+
+        //2.2信息
+        console.info('night gathers')
+        //2.3表格
+        console.table([
+            {
+                first: 'Rene',
+                last: 'Magritte'
+            },
+            {
+                first: 'Chaim',
+                last: 'Soutine',
+                birthday: '18930113'
+            },
+            {
+                first: 'Henri',
+                last: 'Mattisse'
+            }
+        ])
+        //2.4分组
+        const label = 'Package elephant'
+
+        console.groupCollapsed(label);
+        console.log('Open box')
+        console.log('Put elephant in')
+        console.log('Close box')
+        console.groupEnd(label)
+
+        //2.5对象结构
+        console.dir(document.body);
+        function fn() {
+            console.log(123);
+        }
+        fn.abc = 1;
+        console.dir(fn)
+
+        //2.6计时
+        console.time('loop');
+        const start1 = Date.now();
+        while (Date.now() - start1 < 30) { }
+        console.timeEnd('loop')
+
+        //2.7计数
+        const start2 = Date.now();
+        const foo = [1, 2, 3, 4, 5]
+        for (const i in foo) {
+            console.count('loop')
+        }
+        console.countReset('loop');
+
+        //2.8堆栈
+        function b() {
+            console.trace()
+        }
+        function a() {
+            b()
+        }
+        a()
+        //2.9断言
+        function sum(a, b) {
+            return a + b;
+        }
+        console.assert(sum(1, 2) === 3)
+        //3警告
+        console.warn('Abondon Hope All Ye Who Enter')
+        //4.打印错误
+        console.error('You has made a huge mistake')
+        //5.清空信息
+        // console.clear()
+        //6.给消息添加样式
+        const styles = `
+            padding:5px;
+            background-color:#90442E;
+            color:white;
+            font-style:italic;
+            border:5px solid #E06E3C;
+            font-size:2em
+        `
+            console.log('%c脆脆鲨是坠🐮的',styles)
+            console.log('%c好屁屁老婆是天才',styles)
+
+
+    </script>
+</body>
+
+</html>
