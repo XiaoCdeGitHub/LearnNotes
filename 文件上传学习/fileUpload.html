@@ -1,0 +1,102 @@
+<!--
+ * @Author: 崔鼎 1692338302@qq.com
+ * @Date: 2023-09-11 20:49:07
+ * @LastEditors: 崔鼎 1692338302@qq.com
+ * @LastEditTime: 2023-09-11 21:33:55
+ * @FilePath: \全栈之路\文件上传学习\fileUpload.html
+ * @Description: 文件上传学习:
+
+交互：
+
+如何点击上传多个文件
+
+如何点击上传文件夹
+
+如何拖拽文件和文件夹
+
+
+
+网络：
+
+如何实现多文件上传
+
+如何实现进度追踪
+
+如何实现取消
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FileUpload</title>
+</head>
+
+<body>
+    <style>
+        .drop-area {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 20px auto;
+        }
+
+        .drop-area.highlight {
+            border-color: purple;
+        }
+
+        p {
+            margin-top: 100px;
+            font-size: 18px;
+            color: #888;
+        }
+    </style>
+    <!-- 上传文件 -->
+    <input type="file" multiple />
+    <!-- 上传文件夹 -->
+    <input type="file" webkitdirectory mozdirectory odirectory />
+    <div class="drop-area">
+        <p>将文件拖拽到此区域</p>
+    </div>
+
+
+    <script>
+
+        const dropArea = document.querySelector('.drop-area');
+        // 触发一次
+        dropArea.ondragenter = (e) => {
+            e.preventDefault();
+        }
+        //不断触发 
+        dropArea.ondragover = (e) => {
+            e.preventDefault();
+        }
+        // 拖拽结束
+        dropArea.ondrop = (e) => {
+            e.preventDefault();
+            for (const item of e.dataTransfer.items) {
+                console.log('e.dataTransfer.items', item);
+                const entry = item.webkitGetAsEntry();
+                console.log("🚀 ~ file: fileUpload.html:55 ~ entry:", entry)
+                if (entry.isDirectory) {
+                    //我是目录
+                    console.log(222);
+                }
+                else {
+                    console.log('我是文件');
+                    //我是文件
+                     entry.protoType.file((f)=>{
+                        console.log(f);
+                     })
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

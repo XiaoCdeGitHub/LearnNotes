@@ -371,3 +371,11 @@ function getInfo<Type extends ILength>(args: Type): Type {
 有的时候，一个类型需要基于另外一个类型，但是你又不想拷贝一份，这个时候可以考虑使用映射类型。
 口大部分内置的工具都是通过映射类型来实现的;
 口大多数类型体操的题目也是通过映射类型完成的
+
+
+TypeScript模块化
+
+所以在TypeScript中最主要使用的模块化方案就是ES Module
+
+内置类型导入
+这些可以让一个非 TypeScript 编译器比如 Babel、swc 或者esbuild 知道什么样的导入可以被安全移除

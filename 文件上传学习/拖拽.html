@@ -1,0 +1,107 @@
+<!--
+ * @Author: 崔鼎 1692338302@qq.com
+ * @Date: 2023-09-11 21:00:15
+ * @LastEditors: 崔鼎 1692338302@qq.com
+ * @LastEditTime: 2023-09-11 21:00:19
+ * @FilePath: \全栈之路\文件上传学习\拖拽.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>文件拖拽上传区域</title>
+  <style>
+    #drop-area {
+      width: 300px;
+      height: 200px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 20px auto;
+    }
+    #drop-area.highlight {
+      border-color: purple;
+    }
+    p {
+      margin-top: 100px;
+      font-size: 18px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div id="drop-area">
+    <p>将文件拖拽到此区域</p>
+  </div>
+
+  <script>
+    var dropArea = document.getElementById('drop-area');
+
+    // 阻止浏览器默认行为，以便支持文件拖拽上传
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // 添加高亮效果
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    // 移除高亮效果
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    // 处理文件拖拽事件
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight() {
+      dropArea.classList.add('highlight');
+    }
+
+    function unhighlight() {
+      dropArea.classList.remove('highlight');
+    }
+
+    function handleDrop(e) {
+      var dt = e.dataTransfer;
+      var files = dt.files;
+
+      handleFiles(files);
+    }
+
+    function handleFiles(files) {
+      files = [...files];
+      files.forEach(uploadFile);
+    }
+
+    function uploadFile(file) {
+      var url = 'YOUR_UPLOAD_URL';
+      var formData = new FormData();
+
+      formData.append('file', file);
+
+      // 发送文件到服务器
+      fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        // 处理响应
+        console.log('文件已上传！', response);
+      })
+      .catch(error => {
+        // 处理错误
+        console.error('上传文件时出错:', error);
+      });
+    }
+  </script>
+</body>
+</html>
