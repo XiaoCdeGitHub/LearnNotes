@@ -55,7 +55,7 @@ const tinyinit = ref({
   height: window.innerHeight - 50,
   resize: "both", // 用户调整大小
   language_url: '/tinymce/langs/zh_Hans.js', // 汉化路径
-  language: 'zh_Hans',
+  language: 'zh-Hans',
   branding: false, // 隐藏tinymce右下角水印
   convert_urls: false, // 不自动转换链接地址
   plugins: props.plugins, // 插件
@@ -75,7 +75,7 @@ const tinycontent = computed({
   get(): string {
     return props.modelValue;
   },
-  set(value) {
+  set(value:any) {
     emit('update:modelValue', value);
   },
 });
