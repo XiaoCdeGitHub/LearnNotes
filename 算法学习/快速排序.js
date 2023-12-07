@@ -1,7 +1,6 @@
 /***
  * @param array 待排序数组
  */
-
 //实现一
 function quickSort(array,left,right){
     if(Object.prototype.toString.call(array).slice(8,-1) ==='Array'&& typeof left === 'number' && typeof right ==='number'){

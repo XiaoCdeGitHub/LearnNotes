@@ -12,5 +12,4 @@ names.push("cuicuisha");
 let nums:Array<number> = [123,321,111]
 
 
-
 export{}

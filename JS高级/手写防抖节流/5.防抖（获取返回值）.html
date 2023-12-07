@@ -21,7 +21,7 @@
              * 
              * **/
             //原则：一个函数尽量做一件事情，一个变量也用于记录一种状态
-        function myDebounce(fn,dealy,immediate = true) {
+        function myDebounce(fn,delay,immediate = true) {
             //1.用于记录上一次事件触发的timer 
             let timer = null
             let isInvoke = false
@@ -41,7 +41,7 @@
                     fn.apply(this,args);
                     timer = null;//执行过函数之后，讲timer重新置为null
                     isInvoke = false
-                },dealy)
+                },delay)
             }
             //3.给_debounce绑定一个取消的函数
             _debounce.cancel = function(){

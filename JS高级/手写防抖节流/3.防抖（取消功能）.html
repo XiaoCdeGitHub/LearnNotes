@@ -20,7 +20,7 @@
              * 3.内部实现
              * 
              * **/
-        function myDebounce(fn,dealy){
+        function myDebounce(fn,delay){
             //1.用于记录上一次事件触发的timer 
             let timer = null
             //2.触发事件时执行的函数
@@ -34,7 +34,7 @@
                 timer =  setTimeout(()=>{
                     fn.apply(this,args);
                     timer = null;//执行过函数之后，讲timer重新置为null
-                },dealy)
+                },delay)
             }
             //3.给_debounce绑定一个取消的函数
             _debounce.cancel = function(){
@@ -53,7 +53,7 @@
         let counter = 1 ;
         const debounceFn  = myDebounce(function(event){
             console.log(`发送网络请求${counter++}`,this.value,event);    
-        },5000)
+        },1000)
         inputE1.oninput = debounceFn;
         cancelBtn.addEventListener('click',debounceFn.cancel)
           

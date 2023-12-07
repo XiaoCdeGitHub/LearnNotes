@@ -15,9 +15,11 @@ function deepClone(obj,hash =new WeakMap()) {
     hash.set(obj,cloneObj);
     for (let key in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            // cloneObj[key] = deepClone(obj[key],hash)
             cloneObj[key] = deepClone(obj[key],hash)
-        }
+        } 
     }
+
     
     return cloneObj;
     
